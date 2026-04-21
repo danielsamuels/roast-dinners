@@ -1,0 +1,130 @@
+{
+  "id": "lamb-leg",
+  "name": "Leg of Lamb",
+  "meat": "lamb",
+  "weightPerPersonKg": 0.3,
+  "supportsDonenessSelection": true,
+  "cookingTime": {
+    "type": "per-weight",
+    "doneness": {
+      "rare": { "minutesPerKg": 20, "baseMinutes": 15 },
+      "medium-rare": { "minutesPerKg": 25, "baseMinutes": 15 },
+      "medium": { "minutesPerKg": 30, "baseMinutes": 15 },
+      "medium-well": { "minutesPerKg": 35, "baseMinutes": 15 },
+      "well-done": { "minutesPerKg": 40, "baseMinutes": 15 }
+    },
+    "restingMinutes": 20
+  },
+  "suggestedCondiments": ["mint-sauce", "redcurrant-jelly"],
+  "ingredients": [
+    {
+      "ingredientId": "lamb-leg",
+      "baseQuantity": 1.2,
+      "baseServings": 4,
+      "scalingGroup": "lamb-leg-main",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "olive-oil",
+      "baseQuantity": 15,
+      "baseServings": 4,
+      "scalingGroup": "lamb-leg-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "garlic",
+      "baseQuantity": 6,
+      "baseServings": 4,
+      "scalingGroup": "lamb-leg-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "fresh-rosemary",
+      "baseQuantity": 4,
+      "baseServings": 4,
+      "scalingGroup": "lamb-leg-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "salt",
+      "baseQuantity": 1,
+      "baseServings": 4,
+      "scalingGroup": "lamb-leg-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "black-pepper",
+      "baseQuantity": 0.5,
+      "baseServings": 4,
+      "scalingGroup": "lamb-leg-seasoning",
+      "isBreakpointIngredient": false
+    }
+  ],
+  "steps": [
+    {
+      "id": "lamb-leg-prep",
+      "dishId": "lamb-leg",
+      "summary": "Prepare the leg of lamb",
+      "instruction": "Remove the lamb from the fridge at least 30 minutes before cooking to bring it to room temperature. Pat the surface dry with kitchen paper. Preheat your oven to 190°C fan.",
+      "durationMinutes": 5,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["kitchen-paper"],
+      "canPrepAhead": false,
+      "dependsOn": [],
+      "tags": ["prep"]
+    },
+    {
+      "id": "lamb-leg-season",
+      "dishId": "lamb-leg",
+      "summary": "Season the leg of lamb",
+      "instruction": "Using a small sharp knife, make about 12 small deep incisions all over the surface of the lamb. Cut each garlic clove in half and strip the rosemary leaves from their stalks. Push a piece of garlic and a few rosemary leaves into each incision. Rub the entire surface with olive oil and season generously with salt and pepper. Place the lamb in a roasting tin.",
+      "durationMinutes": 10,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["roasting-tin", "knife"],
+      "canPrepAhead": false,
+      "dependsOn": ["lamb-leg-prep"],
+      "tags": ["prep"]
+    },
+    {
+      "id": "lamb-leg-roast",
+      "dishId": "lamb-leg",
+      "summary": "Roast the leg of lamb",
+      "instruction": "Place the lamb in the preheated oven at 190°C fan. Roast for the calculated time based on your chosen doneness and the weight of your joint. Lamb is traditionally served pink (medium-rare to medium) in British cooking, but cook it to your preference. Use a meat thermometer inserted into the thickest part (not touching bone) to check: 50°C for rare, 57°C for medium-rare, 63°C for medium, 68°C for medium-well, or 74°C for well-done.",
+      "durationMinutes": 0,
+      "resource": "oven",
+      "ovenTempCelsius": 190,
+      "requiredEquipment": ["roasting-tin", "meat-thermometer"],
+      "canPrepAhead": false,
+      "dependsOn": ["lamb-leg-season"],
+      "tags": ["cook"]
+    },
+    {
+      "id": "lamb-leg-rest",
+      "dishId": "lamb-leg",
+      "summary": "Rest the leg of lamb",
+      "instruction": "Remove the lamb from the oven and transfer to a warm plate or board. Cover loosely with foil and a clean tea towel. Let it rest for at least 20 minutes — this allows the juices to redistribute and makes the meat much more tender and easier to carve. Reserve the roasting tin with the pan juices for making gravy.",
+      "durationMinutes": 20,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["foil", "chopping-board"],
+      "canPrepAhead": false,
+      "dependsOn": ["lamb-leg-roast"],
+      "tags": ["rest"]
+    },
+    {
+      "id": "lamb-leg-carve",
+      "dishId": "lamb-leg",
+      "summary": "Carve the leg of lamb",
+      "instruction": "Hold the leg by the bone (use a clean tea towel to grip it) and angle it upright. Using a sharp carving knife, cut thin slices downwards and parallel to the bone, working your way around the leg. Turn the leg over and repeat on the other side. Arrange the slices on a warm serving platter.",
+      "durationMinutes": 10,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["carving-knife", "chopping-board", "serving-platter"],
+      "canPrepAhead": false,
+      "dependsOn": ["lamb-leg-rest"],
+      "tags": ["serve"]
+    }
+  ]
+}

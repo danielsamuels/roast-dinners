@@ -1,0 +1,126 @@
+{
+  "id": "pork-belly",
+  "name": "Pork Belly",
+  "meat": "pork",
+  "weightPerPersonKg": 0.25,
+  "supportsDonenessSelection": false,
+  "cookingTime": {
+    "type": "per-weight",
+    "doneness": {
+      "well-done": { "minutesPerKg": 75, "baseMinutes": 30 }
+    },
+    "restingMinutes": 10
+  },
+  "suggestedCondiments": ["apple-sauce"],
+  "ingredients": [
+    {
+      "ingredientId": "pork-belly",
+      "baseQuantity": 1.0,
+      "baseServings": 4,
+      "scalingGroup": "pork-belly-main",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "olive-oil",
+      "baseQuantity": 10,
+      "baseServings": 4,
+      "scalingGroup": "pork-belly-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "garlic",
+      "baseQuantity": 3,
+      "baseServings": 4,
+      "scalingGroup": "pork-belly-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "fresh-thyme",
+      "baseQuantity": 3,
+      "baseServings": 4,
+      "scalingGroup": "pork-belly-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "salt",
+      "baseQuantity": 2,
+      "baseServings": 4,
+      "scalingGroup": "pork-belly-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "black-pepper",
+      "baseQuantity": 0.5,
+      "baseServings": 4,
+      "scalingGroup": "pork-belly-seasoning",
+      "isBreakpointIngredient": false
+    }
+  ],
+  "steps": [
+    {
+      "id": "pork-belly-prep",
+      "dishId": "pork-belly",
+      "summary": "Prepare the pork belly",
+      "instruction": "Remove the pork belly from the fridge. For the best crackling, pat the skin completely dry with kitchen paper. Ideally, leave the pork uncovered in the fridge overnight — the drier the skin, the better the crackling. Preheat your oven to 220°C fan.",
+      "durationMinutes": 5,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["kitchen-paper"],
+      "canPrepAhead": false,
+      "dependsOn": [],
+      "tags": ["prep"]
+    },
+    {
+      "id": "pork-belly-score",
+      "dishId": "pork-belly",
+      "summary": "Score and season the pork belly",
+      "instruction": "Using a very sharp knife or clean Stanley knife, score the skin in a crosshatch pattern with lines about 1cm apart, cutting through the skin and into the fat but not into the meat. Rub fine salt generously into all the scored lines — really push it in. This draws out moisture and makes the skin blister into crackling. Season the underside with pepper. Place the thyme sprigs and halved garlic cloves in a roasting tin and sit the pork belly on top, skin-side up. Drizzle the skin lightly with olive oil.",
+      "durationMinutes": 10,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["roasting-tin", "knife"],
+      "canPrepAhead": true,
+      "dependsOn": ["pork-belly-prep"],
+      "tags": ["prep"]
+    },
+    {
+      "id": "pork-belly-roast",
+      "dishId": "pork-belly",
+      "summary": "Roast the pork belly",
+      "instruction": "Place the pork belly in the oven at 220°C fan for 30 minutes — this initial high-heat blast starts the crackling. After 30 minutes, reduce the oven temperature to 160°C fan and continue roasting slowly for the remaining calculated time. The low, slow cooking renders the fat and makes the meat meltingly tender. The pork is done when the meat is very tender when pierced with a fork and a thermometer reads at least 70°C. If the crackling needs more crunch, finish under a hot grill for 2–3 minutes at the end.",
+      "durationMinutes": 0,
+      "resource": "oven",
+      "ovenTempCelsius": 220,
+      "requiredEquipment": ["roasting-tin", "meat-thermometer"],
+      "canPrepAhead": false,
+      "dependsOn": ["pork-belly-score"],
+      "tags": ["cook"]
+    },
+    {
+      "id": "pork-belly-rest",
+      "dishId": "pork-belly",
+      "summary": "Rest the pork belly",
+      "instruction": "Remove the pork belly from the oven and let it rest for 10 minutes. If the crackling is good, you can carefully lift it off and set it aside on a board to keep it crispy while the meat rests loosely covered with foil. Reserve any pan juices for making gravy.",
+      "durationMinutes": 10,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["foil", "chopping-board"],
+      "canPrepAhead": false,
+      "dependsOn": ["pork-belly-roast"],
+      "tags": ["rest"]
+    },
+    {
+      "id": "pork-belly-carve",
+      "dishId": "pork-belly",
+      "summary": "Slice the pork belly",
+      "instruction": "Using a sharp knife, cut the pork belly into thick slices or chunks — about 2cm wide. If the crackling was removed, break or cut it into pieces to serve alongside. Arrange on a warm serving platter.",
+      "durationMinutes": 5,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["knife", "chopping-board", "serving-platter"],
+      "canPrepAhead": false,
+      "dependsOn": ["pork-belly-rest"],
+      "tags": ["serve"]
+    }
+  ]
+}

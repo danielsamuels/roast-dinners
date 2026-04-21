@@ -1,0 +1,133 @@
+{
+  "id": "pork-loin",
+  "name": "Pork Loin Joint",
+  "meat": "pork",
+  "weightPerPersonKg": 0.3,
+  "supportsDonenessSelection": false,
+  "cookingTime": {
+    "type": "per-weight",
+    "doneness": {
+      "well-done": { "minutesPerKg": 30, "baseMinutes": 25 }
+    },
+    "restingMinutes": 15
+  },
+  "suggestedCondiments": ["apple-sauce"],
+  "ingredients": [
+    {
+      "ingredientId": "pork-loin-joint",
+      "baseQuantity": 1.2,
+      "baseServings": 4,
+      "scalingGroup": "pork-loin-main",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "olive-oil",
+      "baseQuantity": 15,
+      "baseServings": 4,
+      "scalingGroup": "pork-loin-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "garlic",
+      "baseQuantity": 3,
+      "baseServings": 4,
+      "scalingGroup": "pork-loin-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "fresh-sage",
+      "baseQuantity": 6,
+      "baseServings": 4,
+      "scalingGroup": "pork-loin-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "onion",
+      "baseQuantity": 1,
+      "baseServings": 4,
+      "scalingGroup": "pork-loin-aromatics",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "salt",
+      "baseQuantity": 2,
+      "baseServings": 4,
+      "scalingGroup": "pork-loin-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "black-pepper",
+      "baseQuantity": 0.5,
+      "baseServings": 4,
+      "scalingGroup": "pork-loin-seasoning",
+      "isBreakpointIngredient": false
+    }
+  ],
+  "steps": [
+    {
+      "id": "pork-loin-prep",
+      "dishId": "pork-loin",
+      "summary": "Prepare the pork loin",
+      "instruction": "Remove the pork from the fridge at least 30 minutes before cooking. For the best crackling, pat the skin completely dry with kitchen paper and leave it uncovered in the fridge overnight if possible. The drier the skin, the better the crackling. Preheat your oven to 220°C fan.",
+      "durationMinutes": 5,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["kitchen-paper"],
+      "canPrepAhead": false,
+      "dependsOn": [],
+      "tags": ["prep"]
+    },
+    {
+      "id": "pork-loin-score",
+      "dishId": "pork-loin",
+      "summary": "Score and season the pork",
+      "instruction": "Using a very sharp knife or clean Stanley knife, score the skin in parallel lines about 1cm apart, cutting through the skin and into the fat but not into the meat. Rub fine salt generously into the scored skin — push it right into the cuts. This draws out moisture and helps the crackling puff up. Season the underside of the joint with pepper and tuck the sage leaves and halved garlic cloves underneath. Place the halved onion in the base of a roasting tin and sit the pork on top, skin-side up. Drizzle the skin lightly with olive oil and add a final pinch of salt.",
+      "durationMinutes": 10,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["roasting-tin", "knife"],
+      "canPrepAhead": true,
+      "dependsOn": ["pork-loin-prep"],
+      "tags": ["prep"]
+    },
+    {
+      "id": "pork-loin-roast",
+      "dishId": "pork-loin",
+      "summary": "Roast the pork loin",
+      "instruction": "Place the pork in the oven at 220°C fan for 25 minutes — this initial high-heat blast is what creates the crackling. After 25 minutes, reduce the oven temperature to 180°C fan and continue roasting for the remaining calculated time. The pork is done when a meat thermometer reads 68–70°C in the thickest part. If the crackling hasn't puffed up fully, you can finish it under a hot grill for 2–3 minutes at the end (watch it carefully).",
+      "durationMinutes": 0,
+      "resource": "oven",
+      "ovenTempCelsius": 220,
+      "requiredEquipment": ["roasting-tin", "meat-thermometer"],
+      "canPrepAhead": false,
+      "dependsOn": ["pork-loin-score"],
+      "tags": ["cook"]
+    },
+    {
+      "id": "pork-loin-rest",
+      "dishId": "pork-loin",
+      "summary": "Rest the pork loin",
+      "instruction": "Remove the pork from the oven. If the crackling is good, carefully lift it off and set it aside on a board (it stays crispier this way). Cover the meat loosely with foil and rest for 15 minutes. Reserve the roasting tin with pan juices for making gravy.",
+      "durationMinutes": 15,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["foil", "chopping-board"],
+      "canPrepAhead": false,
+      "dependsOn": ["pork-loin-roast"],
+      "tags": ["rest"]
+    },
+    {
+      "id": "pork-loin-carve",
+      "dishId": "pork-loin",
+      "summary": "Carve the pork loin",
+      "instruction": "Using a sharp carving knife, slice the pork into slices about 1cm thick. Break or cut the crackling into pieces to serve alongside. Arrange the meat and crackling on a warm serving platter.",
+      "durationMinutes": 10,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["carving-knife", "chopping-board", "serving-platter"],
+      "canPrepAhead": false,
+      "dependsOn": ["pork-loin-rest"],
+      "tags": ["serve"]
+    }
+  ]
+}

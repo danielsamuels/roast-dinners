@@ -1,0 +1,53 @@
+{
+  "id": "green-beans-steamed",
+  "name": "Steamed Green Beans",
+  "category": "vegetable",
+  "variants": [],
+  "homemadeAvailable": true,
+  "preMadeOption": null,
+  "ingredients": [
+    {
+      "ingredientId": "green-beans",
+      "baseQuantity": 200,
+      "baseServings": 4,
+      "scalingGroup": "green-beans-steamed-main",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "salt",
+      "baseQuantity": 0.5,
+      "baseServings": 4,
+      "scalingGroup": "green-beans-steamed-seasoning",
+      "isBreakpointIngredient": false
+    }
+  ],
+  "steps": [
+    {
+      "id": "green-beans-steamed-prep",
+      "dishId": "green-beans-steamed",
+      "summary": "Prepare the green beans",
+      "instruction": "Trim the stalk ends off the green beans — you can leave the pointy tail end on. If any beans are very long, snap or cut them in half.",
+      "durationMinutes": 5,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["chopping-board", "knife"],
+      "canPrepAhead": true,
+      "dependsOn": [],
+      "tags": ["prep"]
+    },
+    {
+      "id": "green-beans-steamed-cook",
+      "dishId": "green-beans-steamed",
+      "summary": "Cook the green beans",
+      "instruction": "Bring a saucepan of salted water to a rolling boil. Add the green beans and cook for 4–5 minutes until bright green and just tender with a slight crunch. Drain immediately and serve. They should still have a snap when you bite them.",
+      "durationMinutes": 5,
+      "resource": "hob",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["saucepan", "colander"],
+      "canPrepAhead": false,
+      "dependsOn": ["green-beans-steamed-prep"],
+      "tags": ["cook"]
+    }
+  ],
+  "dietaryFlags": ["gluten-free", "dairy-free", "vegetarian", "vegan"]
+}

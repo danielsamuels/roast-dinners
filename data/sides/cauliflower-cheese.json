@@ -1,0 +1,121 @@
+{
+  "id": "cauliflower-cheese",
+  "name": "Cauliflower Cheese",
+  "category": "extra",
+  "variants": [],
+  "homemadeAvailable": true,
+  "preMadeOption": null,
+  "ingredients": [
+    {
+      "ingredientId": "cauliflower",
+      "baseQuantity": 1,
+      "baseServings": 4,
+      "scalingGroup": "cauliflower-cheese-main",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "cheddar-cheese",
+      "baseQuantity": 150,
+      "baseServings": 4,
+      "scalingGroup": "cauliflower-cheese-sauce",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "butter-unsalted",
+      "baseQuantity": 30,
+      "baseServings": 4,
+      "scalingGroup": "cauliflower-cheese-sauce",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "plain-flour",
+      "baseQuantity": 30,
+      "baseServings": 4,
+      "scalingGroup": "cauliflower-cheese-sauce",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "whole-milk",
+      "baseQuantity": 300,
+      "baseServings": 4,
+      "scalingGroup": "cauliflower-cheese-sauce",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "mustard-powder",
+      "baseQuantity": 0.5,
+      "baseServings": 4,
+      "scalingGroup": "cauliflower-cheese-sauce",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "salt",
+      "baseQuantity": 0.5,
+      "baseServings": 4,
+      "scalingGroup": "cauliflower-cheese-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "black-pepper",
+      "baseQuantity": 0.25,
+      "baseServings": 4,
+      "scalingGroup": "cauliflower-cheese-seasoning",
+      "isBreakpointIngredient": false
+    }
+  ],
+  "steps": [
+    {
+      "id": "cauliflower-cheese-prep",
+      "dishId": "cauliflower-cheese",
+      "summary": "Prepare the cauliflower",
+      "instruction": "Break or cut the cauliflower into medium-sized florets, keeping them roughly the same size so they cook evenly. Discard the tough core and any leaves.",
+      "durationMinutes": 5,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["chopping-board", "knife"],
+      "canPrepAhead": true,
+      "dependsOn": [],
+      "tags": ["prep"]
+    },
+    {
+      "id": "cauliflower-cheese-boil",
+      "dishId": "cauliflower-cheese",
+      "summary": "Par-boil the cauliflower",
+      "instruction": "Bring a large saucepan of salted water to the boil. Add the cauliflower florets and cook for 4–5 minutes until just tender but still with a slight firmness — they will cook further in the oven. Drain well in a colander and transfer to a baking dish.",
+      "durationMinutes": 7,
+      "resource": "hob",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["large-saucepan", "colander", "baking-dish"],
+      "canPrepAhead": true,
+      "dependsOn": ["cauliflower-cheese-prep"],
+      "tags": ["cook"]
+    },
+    {
+      "id": "cauliflower-cheese-sauce",
+      "dishId": "cauliflower-cheese",
+      "summary": "Make the cheese sauce",
+      "instruction": "Grate the cheese. Melt the butter in a saucepan over a medium heat. Add the flour and stir continuously for 1–2 minutes to make a smooth paste (roux). Gradually add the milk a splash at a time, whisking constantly after each addition to prevent lumps. Once all the milk is incorporated, cook for 3–4 minutes, stirring, until the sauce thickens and coats the back of a spoon. Remove from the heat and stir in three-quarters of the grated cheese and the mustard powder. Season with salt and pepper. Stir until the cheese has melted and the sauce is smooth.",
+      "durationMinutes": 10,
+      "resource": "hob",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["saucepan", "whisk", "grater"],
+      "canPrepAhead": true,
+      "dependsOn": ["cauliflower-cheese-boil"],
+      "tags": ["cook"]
+    },
+    {
+      "id": "cauliflower-cheese-bake",
+      "dishId": "cauliflower-cheese",
+      "summary": "Bake the cauliflower cheese",
+      "instruction": "Pour the cheese sauce over the cauliflower in the baking dish, making sure all the florets are well coated. Scatter the remaining grated cheese over the top. Bake in the oven at 190°C fan for 20 minutes until the top is golden and bubbling and the sauce is piping hot throughout.",
+      "durationMinutes": 20,
+      "resource": "oven",
+      "ovenTempCelsius": 190,
+      "requiredEquipment": ["baking-dish"],
+      "canPrepAhead": false,
+      "dependsOn": ["cauliflower-cheese-sauce"],
+      "tags": ["cook"]
+    }
+  ],
+  "dietaryFlags": ["vegetarian"]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "broccoli-steamed",
+  "name": "Steamed Broccoli",
+  "category": "vegetable",
+  "variants": [],
+  "homemadeAvailable": true,
+  "preMadeOption": null,
+  "ingredients": [
+    {
+      "ingredientId": "broccoli",
+      "baseQuantity": 250,
+      "baseServings": 4,
+      "scalingGroup": "broccoli-steamed-main",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "salt",
+      "baseQuantity": 0.5,
+      "baseServings": 4,
+      "scalingGroup": "broccoli-steamed-seasoning",
+      "isBreakpointIngredient": false
+    }
+  ],
+  "steps": [
+    {
+      "id": "broccoli-steamed-prep",
+      "dishId": "broccoli-steamed",
+      "summary": "Prepare the broccoli",
+      "instruction": "Cut the broccoli into bite-sized florets. Peel and slice the thick stalk if you want to use it — it is just as tasty as the florets.",
+      "durationMinutes": 3,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["chopping-board", "knife"],
+      "canPrepAhead": true,
+      "dependsOn": [],
+      "tags": ["prep"]
+    },
+    {
+      "id": "broccoli-steamed-cook",
+      "dishId": "broccoli-steamed",
+      "summary": "Steam the broccoli",
+      "instruction": "Bring a saucepan of salted water to a rolling boil. Add the broccoli florets and cook for 3–4 minutes until bright green and just tender — it should still have a slight bite and snap when you bend a stalk. Drain immediately and serve. Do not overcook or it will go mushy and grey.",
+      "durationMinutes": 4,
+      "resource": "hob",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["saucepan", "colander"],
+      "canPrepAhead": false,
+      "dependsOn": ["broccoli-steamed-prep"],
+      "tags": ["cook"]
+    }
+  ],
+  "dietaryFlags": ["gluten-free", "dairy-free", "vegetarian", "vegan"]
+}

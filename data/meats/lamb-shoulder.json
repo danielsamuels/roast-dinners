@@ -1,0 +1,140 @@
+{
+  "id": "lamb-shoulder",
+  "name": "Shoulder of Lamb (Slow-Roasted)",
+  "meat": "lamb",
+  "weightPerPersonKg": 0.35,
+  "supportsDonenessSelection": false,
+  "cookingTime": {
+    "type": "per-weight",
+    "doneness": {
+      "well-done": { "minutesPerKg": 90, "baseMinutes": 30 }
+    },
+    "restingMinutes": 20
+  },
+  "suggestedCondiments": ["mint-sauce", "redcurrant-jelly"],
+  "ingredients": [
+    {
+      "ingredientId": "lamb-shoulder",
+      "baseQuantity": 1.4,
+      "baseServings": 4,
+      "scalingGroup": "lamb-shoulder-main",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "olive-oil",
+      "baseQuantity": 15,
+      "baseServings": 4,
+      "scalingGroup": "lamb-shoulder-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "garlic",
+      "baseQuantity": 6,
+      "baseServings": 4,
+      "scalingGroup": "lamb-shoulder-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "fresh-rosemary",
+      "baseQuantity": 3,
+      "baseServings": 4,
+      "scalingGroup": "lamb-shoulder-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "fresh-thyme",
+      "baseQuantity": 4,
+      "baseServings": 4,
+      "scalingGroup": "lamb-shoulder-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "onion",
+      "baseQuantity": 1,
+      "baseServings": 4,
+      "scalingGroup": "lamb-shoulder-aromatics",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "salt",
+      "baseQuantity": 1,
+      "baseServings": 4,
+      "scalingGroup": "lamb-shoulder-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "black-pepper",
+      "baseQuantity": 0.5,
+      "baseServings": 4,
+      "scalingGroup": "lamb-shoulder-seasoning",
+      "isBreakpointIngredient": false
+    }
+  ],
+  "steps": [
+    {
+      "id": "lamb-shoulder-prep",
+      "dishId": "lamb-shoulder",
+      "summary": "Prepare the lamb shoulder",
+      "instruction": "Remove the lamb from the fridge at least 30 minutes before cooking to bring it to room temperature. Pat the surface dry with kitchen paper. Preheat your oven to 160°C fan.",
+      "durationMinutes": 5,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["kitchen-paper"],
+      "canPrepAhead": false,
+      "dependsOn": [],
+      "tags": ["prep"]
+    },
+    {
+      "id": "lamb-shoulder-season",
+      "dishId": "lamb-shoulder",
+      "summary": "Season the lamb shoulder",
+      "instruction": "Using a small sharp knife, make about 12 deep incisions all over the surface of the lamb. Cut each garlic clove in half and strip the rosemary leaves from their stalks. Push a piece of garlic and a few rosemary leaves into each incision. Rub the entire surface with olive oil and season generously with salt and pepper. Halve the onion and place in the base of a deep roasting tin along with the thyme sprigs. Sit the lamb on top.",
+      "durationMinutes": 10,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["roasting-tin", "knife"],
+      "canPrepAhead": false,
+      "dependsOn": ["lamb-shoulder-prep"],
+      "tags": ["prep"]
+    },
+    {
+      "id": "lamb-shoulder-roast",
+      "dishId": "lamb-shoulder",
+      "summary": "Slow-roast the lamb shoulder",
+      "instruction": "Pour about 200ml of water into the base of the roasting tin. Cover the tin tightly with a double layer of foil, sealing around the edges. Place in the oven at 160°C fan and slow-roast for the calculated time — this will be several hours depending on the weight. For the last 30 minutes, remove the foil to let the surface brown and crisp up. The lamb is ready when the meat is falling off the bone and pulls apart easily with a fork.",
+      "durationMinutes": 0,
+      "resource": "oven",
+      "ovenTempCelsius": 160,
+      "requiredEquipment": ["roasting-tin", "foil"],
+      "canPrepAhead": false,
+      "dependsOn": ["lamb-shoulder-season"],
+      "tags": ["cook"]
+    },
+    {
+      "id": "lamb-shoulder-rest",
+      "dishId": "lamb-shoulder",
+      "summary": "Rest the lamb shoulder",
+      "instruction": "Remove the lamb from the oven and cover loosely with foil. Let it rest for 20 minutes. Reserve the roasting tin with the cooking juices for making gravy — there will be lots of rich, flavourful liquid.",
+      "durationMinutes": 20,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["foil"],
+      "canPrepAhead": false,
+      "dependsOn": ["lamb-shoulder-roast"],
+      "tags": ["rest"]
+    },
+    {
+      "id": "lamb-shoulder-shred",
+      "dishId": "lamb-shoulder",
+      "summary": "Shred the lamb",
+      "instruction": "Using two forks, pull the lamb apart into large chunks — it should shred very easily. Remove and discard the bone, any large pieces of fat, and the herb stalks. Arrange the shredded lamb on a warm serving platter and spoon over some of the cooking juices to keep it moist.",
+      "durationMinutes": 10,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["serving-platter"],
+      "canPrepAhead": false,
+      "dependsOn": ["lamb-shoulder-rest"],
+      "tags": ["serve"]
+    }
+  ]
+}

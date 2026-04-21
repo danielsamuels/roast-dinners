@@ -1,0 +1,53 @@
+{
+  "id": "pigs-in-blankets",
+  "name": "Pigs in Blankets",
+  "category": "extra",
+  "variants": [],
+  "homemadeAvailable": true,
+  "preMadeOption": "Pigs in blankets (frozen, pack of 12)",
+  "ingredients": [
+    {
+      "ingredientId": "pork-sausages",
+      "baseQuantity": 12,
+      "baseServings": 4,
+      "scalingGroup": "pigs-in-blankets-main",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "streaky-bacon",
+      "baseQuantity": 12,
+      "baseServings": 4,
+      "scalingGroup": "pigs-in-blankets-main",
+      "isBreakpointIngredient": false
+    }
+  ],
+  "steps": [
+    {
+      "id": "pigs-in-blankets-prep",
+      "dishId": "pigs-in-blankets",
+      "summary": "Wrap the sausages in bacon",
+      "instruction": "Stretch each rasher of streaky bacon by pressing it firmly along the length with the back of a knife — this makes it thinner and easier to wrap. Wrap one rasher tightly around each chipolata sausage in a spiral. Place them seam-side down on a baking tray lined with baking paper, leaving a little space between each one.",
+      "durationMinutes": 10,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["baking-tray", "knife"],
+      "canPrepAhead": true,
+      "dependsOn": [],
+      "tags": ["prep"]
+    },
+    {
+      "id": "pigs-in-blankets-roast",
+      "dishId": "pigs-in-blankets",
+      "summary": "Roast the pigs in blankets",
+      "instruction": "Place the tray in the oven at 190°C fan. Roast for 20–25 minutes, turning once halfway through, until the bacon is crispy and golden and the sausages are cooked through and browned. They should be sizzling when you take them out.",
+      "durationMinutes": 25,
+      "resource": "oven",
+      "ovenTempCelsius": 190,
+      "requiredEquipment": ["baking-tray"],
+      "canPrepAhead": false,
+      "dependsOn": ["pigs-in-blankets-prep"],
+      "tags": ["cook"]
+    }
+  ],
+  "dietaryFlags": ["gluten-free", "dairy-free"]
+}

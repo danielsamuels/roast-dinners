@@ -1,0 +1,74 @@
+{
+  "id": "brussels-sprouts-roasted",
+  "name": "Roasted Brussels Sprouts with Bacon",
+  "category": "vegetable",
+  "variants": [],
+  "homemadeAvailable": true,
+  "preMadeOption": null,
+  "ingredients": [
+    {
+      "ingredientId": "brussels-sprouts",
+      "baseQuantity": 300,
+      "baseServings": 4,
+      "scalingGroup": "brussels-sprouts-roasted-main",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "olive-oil",
+      "baseQuantity": 15,
+      "baseServings": 4,
+      "scalingGroup": "brussels-sprouts-roasted-main",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "streaky-bacon",
+      "baseQuantity": 4,
+      "baseServings": 4,
+      "scalingGroup": "brussels-sprouts-roasted-extras",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "salt",
+      "baseQuantity": 0.5,
+      "baseServings": 4,
+      "scalingGroup": "brussels-sprouts-roasted-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "black-pepper",
+      "baseQuantity": 0.25,
+      "baseServings": 4,
+      "scalingGroup": "brussels-sprouts-roasted-seasoning",
+      "isBreakpointIngredient": false
+    }
+  ],
+  "steps": [
+    {
+      "id": "brussels-sprouts-roasted-prep",
+      "dishId": "brussels-sprouts-roasted",
+      "summary": "Prepare the Brussels sprouts",
+      "instruction": "Trim the base of each sprout, remove any yellowed outer leaves, and halve them lengthways. Cut the bacon rashers into small pieces (lardons). Place the sprouts on a baking tray, drizzle with olive oil, season with salt and pepper, and toss to coat. Scatter the bacon pieces over the top.",
+      "durationMinutes": 10,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["chopping-board", "knife", "baking-tray"],
+      "canPrepAhead": true,
+      "dependsOn": [],
+      "tags": ["prep"]
+    },
+    {
+      "id": "brussels-sprouts-roasted-roast",
+      "dishId": "brussels-sprouts-roasted",
+      "summary": "Roast the Brussels sprouts",
+      "instruction": "Place the tray in the oven at 190°C fan. Roast for 20–25 minutes, tossing once halfway through, until the sprouts are tender and caramelised on the cut sides and the bacon is crispy. The outer leaves may get a little charred — this is delicious and completely intentional.",
+      "durationMinutes": 25,
+      "resource": "oven",
+      "ovenTempCelsius": 190,
+      "requiredEquipment": ["baking-tray"],
+      "canPrepAhead": false,
+      "dependsOn": ["brussels-sprouts-roasted-prep"],
+      "tags": ["cook"]
+    }
+  ],
+  "dietaryFlags": ["gluten-free", "dairy-free"]
+}

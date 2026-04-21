@@ -1,0 +1,137 @@
+{
+  "id": "beef-rib",
+  "name": "Rib of Beef (Bone-In)",
+  "meat": "beef",
+  "weightPerPersonKg": 0.35,
+  "supportsDonenessSelection": true,
+  "cookingTime": {
+    "type": "per-weight",
+    "doneness": {
+      "rare": { "minutesPerKg": 15, "baseMinutes": 20 },
+      "medium-rare": { "minutesPerKg": 20, "baseMinutes": 20 },
+      "medium": { "minutesPerKg": 25, "baseMinutes": 20 },
+      "medium-well": { "minutesPerKg": 30, "baseMinutes": 20 },
+      "well-done": { "minutesPerKg": 35, "baseMinutes": 20 }
+    },
+    "restingMinutes": 30
+  },
+  "suggestedCondiments": ["horseradish"],
+  "ingredients": [
+    {
+      "ingredientId": "beef-rib-bone-in",
+      "baseQuantity": 1.4,
+      "baseServings": 4,
+      "scalingGroup": "beef-rib-main",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "olive-oil",
+      "baseQuantity": 15,
+      "baseServings": 4,
+      "scalingGroup": "beef-rib-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "garlic",
+      "baseQuantity": 4,
+      "baseServings": 4,
+      "scalingGroup": "beef-rib-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "fresh-thyme",
+      "baseQuantity": 4,
+      "baseServings": 4,
+      "scalingGroup": "beef-rib-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "fresh-rosemary",
+      "baseQuantity": 3,
+      "baseServings": 4,
+      "scalingGroup": "beef-rib-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "salt",
+      "baseQuantity": 1,
+      "baseServings": 4,
+      "scalingGroup": "beef-rib-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "black-pepper",
+      "baseQuantity": 0.5,
+      "baseServings": 4,
+      "scalingGroup": "beef-rib-seasoning",
+      "isBreakpointIngredient": false
+    }
+  ],
+  "steps": [
+    {
+      "id": "beef-rib-prep",
+      "dishId": "beef-rib",
+      "summary": "Prepare the rib of beef",
+      "instruction": "Remove the beef from the fridge at least 1 hour before cooking — a large bone-in joint needs extra time to come to room temperature for even cooking. Pat the surface dry with kitchen paper. Preheat your oven to 200°C fan.",
+      "durationMinutes": 5,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["kitchen-paper"],
+      "canPrepAhead": false,
+      "dependsOn": [],
+      "tags": ["prep"]
+    },
+    {
+      "id": "beef-rib-season",
+      "dishId": "beef-rib",
+      "summary": "Season the rib of beef",
+      "instruction": "Rub the joint all over with olive oil — be generous. Season very liberally with salt and pepper, pressing the seasoning into the fat cap and all exposed surfaces. Scatter the thyme and rosemary sprigs over the top and tuck the unpeeled garlic cloves around the base of the joint in the roasting tin. The bones act as a natural rack, so the joint can sit directly on them.",
+      "durationMinutes": 10,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["roasting-tin"],
+      "canPrepAhead": false,
+      "dependsOn": ["beef-rib-prep"],
+      "tags": ["prep"]
+    },
+    {
+      "id": "beef-rib-roast",
+      "dishId": "beef-rib",
+      "summary": "Roast the rib of beef",
+      "instruction": "Place the beef in the preheated oven at 200°C fan. Roast for the calculated time based on your chosen doneness and the weight of your joint. Bone-in beef cooks slightly faster than boneless because the bone conducts heat. Use a meat thermometer inserted into the thickest part of the meat (not touching bone) to check: 50°C for rare, 57°C for medium-rare, 63°C for medium, 68°C for medium-well, or 74°C for well-done.",
+      "durationMinutes": 0,
+      "resource": "oven",
+      "ovenTempCelsius": 200,
+      "requiredEquipment": ["roasting-tin", "meat-thermometer"],
+      "canPrepAhead": false,
+      "dependsOn": ["beef-rib-season"],
+      "tags": ["cook"]
+    },
+    {
+      "id": "beef-rib-rest",
+      "dishId": "beef-rib",
+      "summary": "Rest the rib of beef",
+      "instruction": "Remove the beef from the oven and transfer to a large warm board or platter. Cover loosely with foil and a clean tea towel. Rest for at least 30 minutes — a large bone-in joint benefits from a longer rest. This makes the meat incredibly tender and much easier to carve. The internal temperature will continue to rise by 3–5°C during resting. Reserve the roasting tin with pan juices for making gravy.",
+      "durationMinutes": 30,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["foil", "chopping-board"],
+      "canPrepAhead": false,
+      "dependsOn": ["beef-rib-roast"],
+      "tags": ["rest"]
+    },
+    {
+      "id": "beef-rib-carve",
+      "dishId": "beef-rib",
+      "summary": "Carve the rib of beef",
+      "instruction": "Stand the joint upright with the bones pointing up. Using a sharp carving knife, cut down along the bones to separate the meat from the ribs in one piece. Lay the boneless piece flat and slice against the grain into slices about 5–8mm thick. Arrange on a warm serving platter. The bones can be served separately for anyone who wants to gnaw on them.",
+      "durationMinutes": 10,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["carving-knife", "chopping-board", "serving-platter"],
+      "canPrepAhead": false,
+      "dependsOn": ["beef-rib-rest"],
+      "tags": ["serve"]
+    }
+  ]
+}

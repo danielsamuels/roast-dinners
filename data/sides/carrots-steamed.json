@@ -1,0 +1,60 @@
+{
+  "id": "carrots-steamed",
+  "name": "Steamed Carrots",
+  "category": "vegetable",
+  "variants": [],
+  "homemadeAvailable": true,
+  "preMadeOption": null,
+  "ingredients": [
+    {
+      "ingredientId": "carrots",
+      "baseQuantity": 300,
+      "baseServings": 4,
+      "scalingGroup": "carrots-steamed-main",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "butter-salted",
+      "baseQuantity": 15,
+      "baseServings": 4,
+      "scalingGroup": "carrots-steamed-main",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "salt",
+      "baseQuantity": 0.5,
+      "baseServings": 4,
+      "scalingGroup": "carrots-steamed-seasoning",
+      "isBreakpointIngredient": false
+    }
+  ],
+  "steps": [
+    {
+      "id": "carrots-steamed-prep",
+      "dishId": "carrots-steamed",
+      "summary": "Prepare the carrots",
+      "instruction": "Peel the carrots and cut them into batons or rounds about 5mm thick. Try to keep them a similar size so they cook evenly.",
+      "durationMinutes": 5,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["peeler", "chopping-board", "knife"],
+      "canPrepAhead": true,
+      "dependsOn": [],
+      "tags": ["prep"]
+    },
+    {
+      "id": "carrots-steamed-cook",
+      "dishId": "carrots-steamed",
+      "summary": "Steam the carrots",
+      "instruction": "Bring a saucepan of salted water to the boil. Add the carrots and cook for 8–10 minutes until just tender — they should still have a slight bite. Drain well, return to the pan, and toss with a knob of butter and a pinch of salt. Transfer to a warm serving dish.",
+      "durationMinutes": 10,
+      "resource": "hob",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["saucepan", "colander"],
+      "canPrepAhead": false,
+      "dependsOn": ["carrots-steamed-prep"],
+      "tags": ["cook"]
+    }
+  ],
+  "dietaryFlags": ["gluten-free", "vegetarian"]
+}

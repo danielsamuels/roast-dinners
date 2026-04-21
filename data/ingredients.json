@@ -282,6 +282,16 @@
     "defaultUnit": "g",
     "category": "bakery"
   },
+  "gravy-granules": {
+    "name": "Gravy granules",
+    "defaultUnit": "g",
+    "category": "storecupboard"
+  },
+  "ground-nutmeg": {
+    "name": "Ground nutmeg",
+    "defaultUnit": "tsp",
+    "category": "storecupboard"
+  },
 
   "cranberry-sauce": {
     "name": "Cranberry sauce",

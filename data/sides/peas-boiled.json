@@ -1,0 +1,47 @@
+{
+  "id": "peas-boiled",
+  "name": "Boiled Peas",
+  "category": "vegetable",
+  "variants": [],
+  "homemadeAvailable": true,
+  "preMadeOption": null,
+  "ingredients": [
+    {
+      "ingredientId": "peas-frozen",
+      "baseQuantity": 200,
+      "baseServings": 4,
+      "scalingGroup": "peas-boiled-main",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "butter-salted",
+      "baseQuantity": 10,
+      "baseServings": 4,
+      "scalingGroup": "peas-boiled-main",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "salt",
+      "baseQuantity": 0.25,
+      "baseServings": 4,
+      "scalingGroup": "peas-boiled-seasoning",
+      "isBreakpointIngredient": false
+    }
+  ],
+  "steps": [
+    {
+      "id": "peas-boiled-cook",
+      "dishId": "peas-boiled",
+      "summary": "Boil the peas",
+      "instruction": "Bring a saucepan of salted water to a rolling boil. Add the frozen peas — there is no need to defrost them first. Bring back to the boil and cook for 2–3 minutes until the peas are tender and bright green. Drain well, return to the pan, and stir through a small knob of butter. Serve immediately.",
+      "durationMinutes": 3,
+      "resource": "hob",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["saucepan", "colander"],
+      "canPrepAhead": false,
+      "dependsOn": [],
+      "tags": ["cook"]
+    }
+  ],
+  "dietaryFlags": ["gluten-free", "vegetarian"]
+}

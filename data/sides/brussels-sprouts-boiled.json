@@ -1,0 +1,60 @@
+{
+  "id": "brussels-sprouts-boiled",
+  "name": "Boiled Brussels Sprouts",
+  "category": "vegetable",
+  "variants": [],
+  "homemadeAvailable": true,
+  "preMadeOption": null,
+  "ingredients": [
+    {
+      "ingredientId": "brussels-sprouts",
+      "baseQuantity": 300,
+      "baseServings": 4,
+      "scalingGroup": "brussels-sprouts-boiled-main",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "butter-salted",
+      "baseQuantity": 10,
+      "baseServings": 4,
+      "scalingGroup": "brussels-sprouts-boiled-main",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "salt",
+      "baseQuantity": 0.5,
+      "baseServings": 4,
+      "scalingGroup": "brussels-sprouts-boiled-seasoning",
+      "isBreakpointIngredient": false
+    }
+  ],
+  "steps": [
+    {
+      "id": "brussels-sprouts-boiled-prep",
+      "dishId": "brussels-sprouts-boiled",
+      "summary": "Prepare the Brussels sprouts",
+      "instruction": "Trim the base of each sprout and remove any yellowed or damaged outer leaves. If the sprouts are large, cut a small cross in the base — this helps them cook evenly. Halve any very large ones.",
+      "durationMinutes": 10,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["chopping-board", "knife"],
+      "canPrepAhead": true,
+      "dependsOn": [],
+      "tags": ["prep"]
+    },
+    {
+      "id": "brussels-sprouts-boiled-cook",
+      "dishId": "brussels-sprouts-boiled",
+      "summary": "Boil the Brussels sprouts",
+      "instruction": "Bring a large saucepan of salted water to a rolling boil. Add the sprouts and cook for 6–8 minutes until just tender when pierced with a knife — do not overcook them or they become mushy and develop that strong sulphurous smell. They should still be bright green and have a slight bite. Drain well, toss with a knob of butter, and serve immediately.",
+      "durationMinutes": 8,
+      "resource": "hob",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["large-saucepan", "colander"],
+      "canPrepAhead": false,
+      "dependsOn": ["brussels-sprouts-boiled-prep"],
+      "tags": ["cook"]
+    }
+  ],
+  "dietaryFlags": ["gluten-free", "vegetarian"]
+}

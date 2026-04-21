@@ -1,0 +1,81 @@
+{
+  "id": "gravy",
+  "name": "Homemade Gravy",
+  "category": "staple",
+  "variants": [],
+  "homemadeAvailable": true,
+  "preMadeOption": "Gravy granules (pack)",
+  "ingredients": [
+    {
+      "ingredientId": "plain-flour",
+      "baseQuantity": 25,
+      "baseServings": 4,
+      "scalingGroup": "gravy-roux",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "butter-unsalted",
+      "baseQuantity": 25,
+      "baseServings": 4,
+      "scalingGroup": "gravy-roux",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "chicken-stock-cube",
+      "baseQuantity": 1,
+      "baseServings": 4,
+      "scalingGroup": "gravy-liquid",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "onion",
+      "baseQuantity": 1,
+      "baseServings": 4,
+      "scalingGroup": "gravy-base",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "salt",
+      "baseQuantity": 0.5,
+      "baseServings": 4,
+      "scalingGroup": "gravy-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "black-pepper",
+      "baseQuantity": 0.25,
+      "baseServings": 4,
+      "scalingGroup": "gravy-seasoning",
+      "isBreakpointIngredient": false
+    }
+  ],
+  "steps": [
+    {
+      "id": "gravy-prep",
+      "dishId": "gravy",
+      "summary": "Prepare the gravy base",
+      "instruction": "Finely dice the onion. If you have pan juices from resting the meat, spoon off most of the fat from the roasting tin but keep all the dark, sticky juices at the bottom — these add incredible flavour. Dissolve the stock cube in 500ml of boiling water. Use a stock cube that matches your meat — chicken stock for chicken, beef stock for beef or lamb.",
+      "durationMinutes": 5,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["chopping-board", "knife"],
+      "canPrepAhead": false,
+      "dependsOn": [],
+      "tags": ["prep"]
+    },
+    {
+      "id": "gravy-cook",
+      "dishId": "gravy",
+      "summary": "Make the gravy",
+      "instruction": "If using the meat roasting tin, place it directly on the hob over a medium heat. Otherwise, melt the butter in a saucepan. Add the diced onion and cook for 3–4 minutes until softened. Stir in the flour and cook for 1–2 minutes, stirring constantly, to make a roux — it should turn a light golden colour. Gradually pour in the stock a little at a time, whisking continuously to prevent lumps. Bring to a gentle simmer and cook for 5 minutes, stirring often, until the gravy thickens to a smooth, pourable consistency. Season to taste with salt and pepper. Strain through a sieve into a warm gravy jug for the smoothest result.",
+      "durationMinutes": 10,
+      "resource": "hob",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["saucepan", "whisk", "sieve"],
+      "canPrepAhead": false,
+      "dependsOn": ["gravy-prep"],
+      "tags": ["cook"]
+    }
+  ],
+  "dietaryFlags": []
+}

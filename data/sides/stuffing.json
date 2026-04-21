@@ -1,0 +1,115 @@
+{
+  "id": "stuffing",
+  "name": "Sage & Onion Stuffing",
+  "category": "staple",
+  "variants": [],
+  "homemadeAvailable": true,
+  "preMadeOption": "Sage & onion stuffing mix (packet)",
+  "ingredients": [
+    {
+      "ingredientId": "breadcrumbs-fresh",
+      "baseQuantity": 150,
+      "baseServings": 4,
+      "scalingGroup": "stuffing-main",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "onion",
+      "baseQuantity": 1,
+      "baseServings": 4,
+      "scalingGroup": "stuffing-main",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "butter-unsalted",
+      "baseQuantity": 30,
+      "baseServings": 4,
+      "scalingGroup": "stuffing-main",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "fresh-sage",
+      "baseQuantity": 6,
+      "baseServings": 4,
+      "scalingGroup": "stuffing-herbs",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "fresh-parsley",
+      "baseQuantity": 3,
+      "baseServings": 4,
+      "scalingGroup": "stuffing-herbs",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "eggs-large",
+      "baseQuantity": 1,
+      "baseServings": 4,
+      "scalingGroup": "stuffing-main",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "lemon",
+      "baseQuantity": 0.5,
+      "baseServings": 4,
+      "scalingGroup": "stuffing-main",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "salt",
+      "baseQuantity": 0.5,
+      "baseServings": 4,
+      "scalingGroup": "stuffing-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "black-pepper",
+      "baseQuantity": 0.25,
+      "baseServings": 4,
+      "scalingGroup": "stuffing-seasoning",
+      "isBreakpointIngredient": false
+    }
+  ],
+  "steps": [
+    {
+      "id": "stuffing-cook-onion",
+      "dishId": "stuffing",
+      "summary": "Cook the onion for the stuffing",
+      "instruction": "Finely dice the onion. Melt the butter in a frying pan over a medium heat. Add the onion and cook gently for about 8–10 minutes, stirring occasionally, until soft and translucent but not browned. Remove from the heat and allow to cool slightly.",
+      "durationMinutes": 12,
+      "resource": "hob",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["frying-pan", "chopping-board", "knife"],
+      "canPrepAhead": true,
+      "dependsOn": [],
+      "tags": ["prep"]
+    },
+    {
+      "id": "stuffing-mix",
+      "dishId": "stuffing",
+      "summary": "Mix the stuffing",
+      "instruction": "Place the breadcrumbs in a large mixing bowl. Finely chop the sage and parsley and add to the bowl along with the cooked onion and all the buttery juices. Grate in the zest of half a lemon and squeeze in a little juice. Season with salt and pepper. Beat the egg and stir it in to bind the mixture — it should be moist but hold its shape when pressed together. If it seems dry, add a splash of water.",
+      "durationMinutes": 5,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["mixing-bowl"],
+      "canPrepAhead": true,
+      "dependsOn": ["stuffing-cook-onion"],
+      "tags": ["prep"]
+    },
+    {
+      "id": "stuffing-bake",
+      "dishId": "stuffing",
+      "summary": "Bake the stuffing",
+      "instruction": "Preheat the oven to 190°C fan (or use the oven that is already on for the roast). Spoon the stuffing mixture into a greased baking dish and press down gently — don't pack it too tightly. Bake for 25 minutes until golden and crispy on top but still soft in the middle.",
+      "durationMinutes": 25,
+      "resource": "oven",
+      "ovenTempCelsius": 190,
+      "requiredEquipment": ["baking-dish"],
+      "canPrepAhead": false,
+      "dependsOn": ["stuffing-mix"],
+      "tags": ["cook"]
+    }
+  ],
+  "dietaryFlags": []
+}

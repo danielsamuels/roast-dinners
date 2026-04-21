@@ -1,0 +1,87 @@
+{
+  "id": "mashed-potatoes",
+  "name": "Mashed Potatoes",
+  "category": "staple",
+  "variants": [],
+  "homemadeAvailable": true,
+  "preMadeOption": null,
+  "ingredients": [
+    {
+      "ingredientId": "potatoes-maris-piper",
+      "baseQuantity": 800,
+      "baseServings": 4,
+      "scalingGroup": "mashed-potatoes-main",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "butter-salted",
+      "baseQuantity": 40,
+      "baseServings": 4,
+      "scalingGroup": "mashed-potatoes-main",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "whole-milk",
+      "baseQuantity": 60,
+      "baseServings": 4,
+      "scalingGroup": "mashed-potatoes-main",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "salt",
+      "baseQuantity": 0.5,
+      "baseServings": 4,
+      "scalingGroup": "mashed-potatoes-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "black-pepper",
+      "baseQuantity": 0.25,
+      "baseServings": 4,
+      "scalingGroup": "mashed-potatoes-seasoning",
+      "isBreakpointIngredient": false
+    }
+  ],
+  "steps": [
+    {
+      "id": "mashed-potatoes-peel",
+      "dishId": "mashed-potatoes",
+      "summary": "Peel and cut the potatoes",
+      "instruction": "Peel the potatoes and cut them into even-sized chunks — roughly 3–4cm. Keeping them a similar size ensures they cook evenly. Place them in a large saucepan.",
+      "durationMinutes": 10,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["peeler", "chopping-board", "knife", "large-saucepan"],
+      "canPrepAhead": true,
+      "dependsOn": [],
+      "tags": ["prep"]
+    },
+    {
+      "id": "mashed-potatoes-boil",
+      "dishId": "mashed-potatoes",
+      "summary": "Boil the potatoes",
+      "instruction": "Cover the potatoes with cold, salted water. Bring to the boil over high heat, then reduce to a steady simmer. Cook for 15–20 minutes until the potatoes are completely tender — they should break apart easily when poked with a knife. Don't rush this step; undercooked potatoes make lumpy mash.",
+      "durationMinutes": 20,
+      "resource": "hob",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["large-saucepan"],
+      "canPrepAhead": false,
+      "dependsOn": ["mashed-potatoes-peel"],
+      "tags": ["cook"]
+    },
+    {
+      "id": "mashed-potatoes-mash",
+      "dishId": "mashed-potatoes",
+      "summary": "Mash the potatoes",
+      "instruction": "Drain the potatoes thoroughly in a colander, then return them to the hot saucepan. Let them steam-dry for a minute. Add the butter in pieces and mash well using a potato masher until smooth and lump-free. Pour in the warm milk a little at a time, beating with a wooden spoon until you reach your preferred consistency — the mash should be smooth and creamy. Season to taste with salt and pepper. Keep warm with a lid on until ready to serve.",
+      "durationMinutes": 10,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["colander", "potato-masher"],
+      "canPrepAhead": false,
+      "dependsOn": ["mashed-potatoes-boil"],
+      "tags": ["cook"]
+    }
+  ],
+  "dietaryFlags": ["gluten-free", "vegetarian"]
+}

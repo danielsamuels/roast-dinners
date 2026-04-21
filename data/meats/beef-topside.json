@@ -1,0 +1,157 @@
+{
+  "id": "beef-topside",
+  "name": "Beef Topside Joint",
+  "meat": "beef",
+  "weightPerPersonKg": 0.3,
+  "supportsDonenessSelection": true,
+  "cookingTime": {
+    "type": "per-weight",
+    "doneness": {
+      "rare": { "minutesPerKg": 20, "baseMinutes": 15 },
+      "medium-rare": { "minutesPerKg": 25, "baseMinutes": 15 },
+      "medium": { "minutesPerKg": 30, "baseMinutes": 15 },
+      "medium-well": { "minutesPerKg": 35, "baseMinutes": 15 },
+      "well-done": { "minutesPerKg": 40, "baseMinutes": 15 }
+    },
+    "restingMinutes": 20
+  },
+  "suggestedCondiments": ["horseradish"],
+  "ingredients": [
+    {
+      "ingredientId": "beef-topside-joint",
+      "baseQuantity": 1.2,
+      "baseServings": 4,
+      "scalingGroup": "beef-topside-main",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "olive-oil",
+      "baseQuantity": 15,
+      "baseServings": 4,
+      "scalingGroup": "beef-topside-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "garlic",
+      "baseQuantity": 4,
+      "baseServings": 4,
+      "scalingGroup": "beef-topside-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "fresh-thyme",
+      "baseQuantity": 3,
+      "baseServings": 4,
+      "scalingGroup": "beef-topside-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "fresh-rosemary",
+      "baseQuantity": 2,
+      "baseServings": 4,
+      "scalingGroup": "beef-topside-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "mustard-powder",
+      "baseQuantity": 1,
+      "baseServings": 4,
+      "scalingGroup": "beef-topside-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "salt",
+      "baseQuantity": 1,
+      "baseServings": 4,
+      "scalingGroup": "beef-topside-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "black-pepper",
+      "baseQuantity": 0.5,
+      "baseServings": 4,
+      "scalingGroup": "beef-topside-seasoning",
+      "isBreakpointIngredient": false
+    }
+  ],
+  "steps": [
+    {
+      "id": "beef-topside-prep",
+      "dishId": "beef-topside",
+      "summary": "Prepare the beef joint",
+      "instruction": "Remove the beef from the fridge at least 30 minutes before cooking to bring it to room temperature — this ensures even cooking throughout. Pat the joint dry all over with kitchen paper. Preheat your oven to 190°C fan.",
+      "durationMinutes": 5,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["kitchen-paper"],
+      "canPrepAhead": false,
+      "dependsOn": [],
+      "tags": ["prep"]
+    },
+    {
+      "id": "beef-topside-season",
+      "dishId": "beef-topside",
+      "summary": "Season the beef",
+      "instruction": "Rub the joint all over with olive oil. Mix the mustard powder with a pinch of salt and pepper, then rub this over the entire surface of the beef. Scatter the thyme and rosemary sprigs and unpeeled garlic cloves around the joint in the roasting tin. Season generously with salt and pepper.",
+      "durationMinutes": 5,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["roasting-tin"],
+      "canPrepAhead": false,
+      "dependsOn": ["beef-topside-prep"],
+      "tags": ["prep"]
+    },
+    {
+      "id": "beef-topside-sear",
+      "dishId": "beef-topside",
+      "summary": "Sear the beef",
+      "instruction": "Heat a large heavy-based frying pan over high heat until it is very hot. Add a splash of oil and carefully place the beef in the pan. Sear for about 1 minute on each side until deeply browned all over — this develops flavour and colour. Transfer the beef to the roasting tin with the herbs.",
+      "durationMinutes": 5,
+      "resource": "hob",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["frying-pan", "tongs"],
+      "canPrepAhead": false,
+      "dependsOn": ["beef-topside-season"],
+      "tags": ["cook"]
+    },
+    {
+      "id": "beef-topside-roast",
+      "dishId": "beef-topside",
+      "summary": "Roast the beef",
+      "instruction": "Place the beef in the preheated oven at 190°C fan. Roast for the calculated time based on your chosen doneness and the weight of your joint. As a guide: rare is about 20 minutes per kg plus 15 minutes, medium is about 30 minutes per kg plus 15 minutes, and well-done is about 40 minutes per kg plus 15 minutes. Use a meat thermometer to check: 50°C for rare, 57°C for medium-rare, 63°C for medium, 68°C for medium-well, or 74°C for well-done.",
+      "durationMinutes": 0,
+      "resource": "oven",
+      "ovenTempCelsius": 190,
+      "requiredEquipment": ["roasting-tin", "meat-thermometer"],
+      "canPrepAhead": false,
+      "dependsOn": ["beef-topside-sear"],
+      "tags": ["cook"]
+    },
+    {
+      "id": "beef-topside-rest",
+      "dishId": "beef-topside",
+      "summary": "Rest the beef",
+      "instruction": "Remove the beef from the oven and transfer to a warm plate or board. Cover loosely with foil and a clean tea towel. Let it rest for at least 20 minutes — this is essential as it allows the juices to redistribute throughout the meat, resulting in a much more tender and juicy roast. The internal temperature will continue to rise by a few degrees during resting. Reserve the roasting tin with the pan juices for making gravy.",
+      "durationMinutes": 20,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["foil", "chopping-board"],
+      "canPrepAhead": false,
+      "dependsOn": ["beef-topside-roast"],
+      "tags": ["rest"]
+    },
+    {
+      "id": "beef-topside-carve",
+      "dishId": "beef-topside",
+      "summary": "Carve the beef",
+      "instruction": "Using a sharp carving knife, slice the beef against the grain into thin slices — about 5mm thick. Cutting against the grain ensures each slice is tender. Arrange the slices on a warm serving platter, spooning over a little of the resting juices.",
+      "durationMinutes": 10,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["carving-knife", "chopping-board", "serving-platter"],
+      "canPrepAhead": false,
+      "dependsOn": ["beef-topside-rest"],
+      "tags": ["serve"]
+    }
+  ]
+}

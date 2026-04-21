@@ -1,0 +1,118 @@
+{
+  "id": "chicken-thighs",
+  "name": "Roast Chicken Thighs",
+  "meat": "chicken",
+  "weightPerPersonKg": 0.35,
+  "supportsDonenessSelection": false,
+  "cookingTime": {
+    "type": "fixed",
+    "minutes": 35,
+    "restingMinutes": 5
+  },
+  "suggestedCondiments": ["cranberry-sauce"],
+  "ingredients": [
+    {
+      "ingredientId": "chicken-thighs-bone-in",
+      "baseQuantity": 8,
+      "baseServings": 4,
+      "scalingGroup": "chicken-thighs-main",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "olive-oil",
+      "baseQuantity": 15,
+      "baseServings": 4,
+      "scalingGroup": "chicken-thighs-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "garlic",
+      "baseQuantity": 4,
+      "baseServings": 4,
+      "scalingGroup": "chicken-thighs-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "fresh-thyme",
+      "baseQuantity": 4,
+      "baseServings": 4,
+      "scalingGroup": "chicken-thighs-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "lemon",
+      "baseQuantity": 1,
+      "baseServings": 4,
+      "scalingGroup": "chicken-thighs-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "salt",
+      "baseQuantity": 1,
+      "baseServings": 4,
+      "scalingGroup": "chicken-thighs-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "black-pepper",
+      "baseQuantity": 0.5,
+      "baseServings": 4,
+      "scalingGroup": "chicken-thighs-seasoning",
+      "isBreakpointIngredient": false
+    }
+  ],
+  "steps": [
+    {
+      "id": "chicken-thighs-prep",
+      "dishId": "chicken-thighs",
+      "summary": "Prepare the chicken thighs",
+      "instruction": "Remove the chicken thighs from the fridge 20 minutes before cooking to bring them to room temperature. Pat them dry all over with kitchen paper — this helps the skin crisp up. Preheat your oven to 190°C fan.",
+      "durationMinutes": 5,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["kitchen-paper"],
+      "canPrepAhead": false,
+      "dependsOn": [],
+      "tags": ["prep"]
+    },
+    {
+      "id": "chicken-thighs-season",
+      "dishId": "chicken-thighs",
+      "summary": "Season the chicken thighs",
+      "instruction": "Place the chicken thighs skin-side up in a roasting tin or baking tray. Drizzle with olive oil and squeeze over the juice of half the lemon. Scatter the unpeeled garlic cloves and thyme sprigs around the thighs. Season generously all over with salt and pepper, rubbing the oil and seasoning into the skin.",
+      "durationMinutes": 5,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["roasting-tin"],
+      "canPrepAhead": false,
+      "dependsOn": ["chicken-thighs-prep"],
+      "tags": ["prep"]
+    },
+    {
+      "id": "chicken-thighs-roast",
+      "dishId": "chicken-thighs",
+      "summary": "Roast the chicken thighs",
+      "instruction": "Place the tray in the preheated oven at 190°C fan. Roast for 35 minutes until the skin is golden and crispy and the juices run clear when you pierce the thickest part with a skewer. A meat thermometer should read 74°C in the thickest part. If the thighs are very large, they may need an extra 5 minutes.",
+      "durationMinutes": 35,
+      "resource": "oven",
+      "ovenTempCelsius": 190,
+      "requiredEquipment": ["roasting-tin", "meat-thermometer"],
+      "canPrepAhead": false,
+      "dependsOn": ["chicken-thighs-season"],
+      "tags": ["cook"]
+    },
+    {
+      "id": "chicken-thighs-rest",
+      "dishId": "chicken-thighs",
+      "summary": "Rest the chicken thighs",
+      "instruction": "Remove the tray from the oven and let the thighs rest for 5 minutes — this allows the juices to settle and keeps the meat moist. Reserve any pan juices for making gravy. Transfer to a warm serving platter.",
+      "durationMinutes": 5,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["serving-platter"],
+      "canPrepAhead": false,
+      "dependsOn": ["chicken-thighs-roast"],
+      "tags": ["rest"]
+    }
+  ]
+}

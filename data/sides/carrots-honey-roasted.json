@@ -1,0 +1,94 @@
+{
+  "id": "carrots-honey-roasted",
+  "name": "Honey Roasted Carrots",
+  "category": "vegetable",
+  "variants": [],
+  "homemadeAvailable": true,
+  "preMadeOption": null,
+  "ingredients": [
+    {
+      "ingredientId": "carrots",
+      "baseQuantity": 300,
+      "baseServings": 4,
+      "scalingGroup": "carrots-honey-roasted-main",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "honey",
+      "baseQuantity": 1.5,
+      "baseServings": 4,
+      "scalingGroup": "carrots-honey-roasted-glaze",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "olive-oil",
+      "baseQuantity": 15,
+      "baseServings": 4,
+      "scalingGroup": "carrots-honey-roasted-glaze",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "fresh-thyme",
+      "baseQuantity": 3,
+      "baseServings": 4,
+      "scalingGroup": "carrots-honey-roasted-herbs",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "salt",
+      "baseQuantity": 0.5,
+      "baseServings": 4,
+      "scalingGroup": "carrots-honey-roasted-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "black-pepper",
+      "baseQuantity": 0.25,
+      "baseServings": 4,
+      "scalingGroup": "carrots-honey-roasted-seasoning",
+      "isBreakpointIngredient": false
+    }
+  ],
+  "steps": [
+    {
+      "id": "carrots-honey-roasted-prep",
+      "dishId": "carrots-honey-roasted",
+      "summary": "Prepare the carrots",
+      "instruction": "Peel the carrots and cut them in half lengthways. If they are very large, quarter them lengthways. Keeping them in large pieces helps them caramelise rather than dry out.",
+      "durationMinutes": 5,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["peeler", "chopping-board", "knife"],
+      "canPrepAhead": true,
+      "dependsOn": [],
+      "tags": ["prep"]
+    },
+    {
+      "id": "carrots-honey-roasted-toss",
+      "dishId": "carrots-honey-roasted",
+      "summary": "Toss carrots with honey glaze",
+      "instruction": "Place the carrots on a baking tray. Drizzle with olive oil and honey, and scatter over the thyme sprigs. Season with salt and pepper. Toss everything together with your hands until the carrots are evenly coated. Spread them out in a single layer — don't overcrowd the tray or they will steam rather than roast.",
+      "durationMinutes": 5,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["baking-tray"],
+      "canPrepAhead": true,
+      "dependsOn": ["carrots-honey-roasted-prep"],
+      "tags": ["prep"]
+    },
+    {
+      "id": "carrots-honey-roasted-roast",
+      "dishId": "carrots-honey-roasted",
+      "summary": "Roast the honey carrots",
+      "instruction": "Place the tray in the oven at 190°C fan. Roast for 25–30 minutes, turning once halfway through, until the carrots are tender, golden at the edges, and slightly caramelised from the honey. They should be sticky and sweet.",
+      "durationMinutes": 30,
+      "resource": "oven",
+      "ovenTempCelsius": 190,
+      "requiredEquipment": ["baking-tray"],
+      "canPrepAhead": false,
+      "dependsOn": ["carrots-honey-roasted-toss"],
+      "tags": ["cook"]
+    }
+  ],
+  "dietaryFlags": ["gluten-free", "dairy-free", "vegetarian"]
+}
