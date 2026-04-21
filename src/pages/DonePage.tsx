@@ -1,13 +1,50 @@
+import { useNavigate } from "react-router-dom";
+import { useMealConfig } from "@/hooks/useMealConfig";
+import { useCookingSession } from "@/hooks/useCookingSession";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { RotateCcw } from "lucide-react";
+
 export default function DonePage() {
+  const navigate = useNavigate();
+  const { resetConfig } = useMealConfig();
+  const session = useCookingSession();
+
+  const handlePlanAnother = () => {
+    session.endSession();
+    resetConfig();
+    navigate("/");
+  };
+
   return (
-    <div className="container mx-auto max-w-2xl px-4 py-8 text-center">
-      <h1 className="text-4xl font-bold tracking-tight">🎉</h1>
-      <h2 className="mt-4 text-3xl font-bold tracking-tight">
-        Enjoy Your Roast Dinner!
-      </h2>
-      <p className="mt-2 text-muted-foreground">
-        Everything is done. Time to eat!
+    <div className="container mx-auto max-w-md px-4 py-12 text-center">
+      <div className="text-8xl animate-bounce">🎉</div>
+
+      <h1 className="mt-6 text-4xl font-bold tracking-tight">
+        Your Roast Dinner is Ready!
+      </h1>
+
+      <p className="mt-3 text-lg text-muted-foreground">
+        Everything is cooked and ready to serve. Enjoy your meal!
       </p>
+
+      <Card className="mt-8">
+        <CardContent className="py-6 space-y-3">
+          <p className="text-sm text-muted-foreground">
+            🍽️ Time to plate up and enjoy with your guests.
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Don't forget the gravy!
+          </p>
+        </CardContent>
+      </Card>
+
+      <div className="mt-8 flex flex-col items-center gap-3">
+        <Button size="lg" onClick={handlePlanAnother}>
+          <RotateCcw className="size-4" data-icon="inline-start" />
+          Plan Another Roast
+        </Button>
+      </div>
     </div>
   );
 }
