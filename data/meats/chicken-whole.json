@@ -1,0 +1,150 @@
+{
+  "id": "chicken-whole",
+  "name": "Whole Roast Chicken",
+  "meat": "chicken",
+  "weightPerPersonKg": 0.45,
+  "supportsDonenessSelection": false,
+  "cookingTime": {
+    "type": "per-weight",
+    "doneness": {
+      "well-done": {
+        "minutesPerKg": 45,
+        "baseMinutes": 20
+      }
+    },
+    "restingMinutes": 15
+  },
+  "suggestedCondiments": ["cranberry-sauce"],
+  "ingredients": [
+    {
+      "ingredientId": "chicken-whole",
+      "baseQuantity": 1.8,
+      "baseServings": 4,
+      "scalingGroup": "chicken-main",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "butter-salted",
+      "baseQuantity": 30,
+      "baseServings": 4,
+      "scalingGroup": "chicken-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "olive-oil",
+      "baseQuantity": 15,
+      "baseServings": 4,
+      "scalingGroup": "chicken-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "lemon",
+      "baseQuantity": 1,
+      "baseServings": 4,
+      "scalingGroup": "chicken-aromatics",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "garlic",
+      "baseQuantity": 4,
+      "baseServings": 4,
+      "scalingGroup": "chicken-aromatics",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "fresh-thyme",
+      "baseQuantity": 4,
+      "baseServings": 4,
+      "scalingGroup": "chicken-aromatics",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "onion",
+      "baseQuantity": 1,
+      "baseServings": 4,
+      "scalingGroup": "chicken-aromatics",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "salt",
+      "baseQuantity": 1,
+      "baseServings": 4,
+      "scalingGroup": "chicken-seasoning",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "black-pepper",
+      "baseQuantity": 0.5,
+      "baseServings": 4,
+      "scalingGroup": "chicken-seasoning",
+      "isBreakpointIngredient": false
+    }
+  ],
+  "steps": [
+    {
+      "id": "chicken-whole-prep",
+      "dishId": "chicken-whole",
+      "summary": "Prepare the chicken",
+      "instruction": "Remove the chicken from the fridge 30 minutes before cooking to bring it to room temperature. Pat it dry all over with kitchen paper — this helps the skin crisp up. Preheat your oven to 190°C fan.",
+      "durationMinutes": 5,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["kitchen-paper"],
+      "canPrepAhead": false,
+      "dependsOn": [],
+      "tags": ["prep"]
+    },
+    {
+      "id": "chicken-whole-season",
+      "dishId": "chicken-whole",
+      "summary": "Season the chicken",
+      "instruction": "Halve the lemon and place it inside the cavity along with the unpeeled garlic cloves and fresh thyme sprigs. Rub the outside of the chicken with softened butter and a drizzle of olive oil. Season generously all over with salt and pepper. Halve the onion and place in the base of a roasting tin, then sit the chicken on top — the onion acts as a trivet and adds flavour to the juices.",
+      "durationMinutes": 10,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["roasting-tin"],
+      "canPrepAhead": false,
+      "dependsOn": ["chicken-whole-prep"],
+      "tags": ["prep"]
+    },
+    {
+      "id": "chicken-whole-roast",
+      "dishId": "chicken-whole",
+      "summary": "Roast the chicken",
+      "instruction": "Place the chicken in the preheated oven at 190°C fan. Roast for the calculated time based on the weight of your bird (approximately 45 minutes per kg plus 20 minutes). The chicken is done when the juices run clear when you pierce the thickest part of the thigh with a skewer, or a meat thermometer reads 74°C in the thickest part. If the skin is browning too quickly, cover loosely with foil.",
+      "durationMinutes": 0,
+      "resource": "oven",
+      "ovenTempCelsius": 190,
+      "requiredEquipment": ["roasting-tin", "meat-thermometer"],
+      "canPrepAhead": false,
+      "dependsOn": ["chicken-whole-season"],
+      "tags": ["cook"]
+    },
+    {
+      "id": "chicken-whole-rest",
+      "dishId": "chicken-whole",
+      "summary": "Rest the chicken",
+      "instruction": "Remove the chicken from the oven and transfer to a warm plate or board. Cover loosely with foil and a clean tea towel. Let it rest for at least 15 minutes — this allows the juices to redistribute and makes carving much easier. Reserve the roasting tin with the pan juices for making gravy.",
+      "durationMinutes": 15,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["foil", "chopping-board"],
+      "canPrepAhead": false,
+      "dependsOn": ["chicken-whole-roast"],
+      "tags": ["rest"]
+    },
+    {
+      "id": "chicken-whole-carve",
+      "dishId": "chicken-whole",
+      "summary": "Carve the chicken",
+      "instruction": "Using a sharp carving knife, remove the legs by cutting through the skin between the leg and body, then pressing the leg outwards until the joint pops — cut through it. Separate the drumstick from the thigh at the joint. Carve the breast meat by slicing downwards along one side of the breastbone, following the ribcage. Repeat on the other side. Arrange on a warm serving platter.",
+      "durationMinutes": 10,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["carving-knife", "chopping-board", "serving-platter"],
+      "canPrepAhead": false,
+      "dependsOn": ["chicken-whole-rest"],
+      "tags": ["serve"]
+    }
+  ]
+}

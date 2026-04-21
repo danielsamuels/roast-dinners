@@ -1,0 +1,105 @@
+{
+  "id": "yorkshire-puddings",
+  "name": "Yorkshire Puddings",
+  "category": "staple",
+  "variants": [],
+  "homemadeAvailable": true,
+  "preMadeOption": "Yorkshire puddings (frozen, pack of 12)",
+  "ingredients": [
+    {
+      "ingredientId": "eggs-large",
+      "baseQuantity": 2,
+      "baseServings": 4,
+      "scalingGroup": "yorkshire-batter",
+      "isBreakpointIngredient": true,
+      "breakpoints": [
+        { "minServings": 1, "maxServings": 4, "quantity": 2 },
+        { "minServings": 5, "maxServings": 8, "quantity": 3 },
+        { "minServings": 9, "maxServings": 12, "quantity": 4 }
+      ]
+    },
+    {
+      "ingredientId": "plain-flour",
+      "baseQuantity": 100,
+      "baseServings": 4,
+      "scalingGroup": "yorkshire-batter",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "whole-milk",
+      "baseQuantity": 120,
+      "baseServings": 4,
+      "scalingGroup": "yorkshire-batter",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "salt",
+      "baseQuantity": 0.5,
+      "baseServings": 4,
+      "scalingGroup": "yorkshire-batter",
+      "isBreakpointIngredient": false
+    },
+    {
+      "ingredientId": "sunflower-oil",
+      "baseQuantity": 24,
+      "baseServings": 4,
+      "scalingGroup": "yorkshire-oil",
+      "isBreakpointIngredient": false
+    }
+  ],
+  "steps": [
+    {
+      "id": "yorkshire-puddings-batter",
+      "dishId": "yorkshire-puddings",
+      "summary": "Make the batter",
+      "instruction": "Crack the eggs into a large jug or mixing bowl. Add a pinch of salt and whisk well until combined. Sift in the plain flour and whisk until you have a smooth, lump-free paste. Gradually pour in the milk, whisking continuously, until you have a smooth batter the consistency of single cream. Leave the batter to rest for at least 30 minutes at room temperature — this is important for light, puffy Yorkshires.",
+      "durationMinutes": 10,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["mixing-bowl", "whisk", "sieve"],
+      "canPrepAhead": true,
+      "dependsOn": [],
+      "tags": ["prep"]
+    },
+    {
+      "id": "yorkshire-puddings-heat-oil",
+      "dishId": "yorkshire-puddings",
+      "summary": "Heat the oil in the tin",
+      "instruction": "Put about half a teaspoon of sunflower oil into each hole of a 12-hole muffin tin (or a Yorkshire pudding tin). Place in the oven at 220°C fan for at least 5 minutes until the oil is smoking hot. The oil must be very hot — this is the key to getting the puddings to rise.",
+      "durationMinutes": 5,
+      "resource": "oven",
+      "ovenTempCelsius": 220,
+      "requiredEquipment": ["muffin-tin"],
+      "canPrepAhead": false,
+      "dependsOn": ["yorkshire-puddings-batter"],
+      "tags": ["cook"]
+    },
+    {
+      "id": "yorkshire-puddings-pour",
+      "dishId": "yorkshire-puddings",
+      "summary": "Pour in the batter",
+      "instruction": "Working quickly — do not let the tin cool down — carefully remove the tin from the oven and pour the batter evenly into the holes, filling each one about one-third full. The batter should sizzle as it hits the hot oil. Return the tin to the oven immediately.",
+      "durationMinutes": 2,
+      "resource": "none",
+      "ovenTempCelsius": null,
+      "requiredEquipment": ["muffin-tin"],
+      "canPrepAhead": false,
+      "dependsOn": ["yorkshire-puddings-heat-oil"],
+      "tags": ["cook"]
+    },
+    {
+      "id": "yorkshire-puddings-bake",
+      "dishId": "yorkshire-puddings",
+      "summary": "Bake the Yorkshire puddings",
+      "instruction": "Bake at 220°C fan for 20–25 minutes until the Yorkshire puddings are puffed up, golden brown, and crispy. Do NOT open the oven door during baking — even a brief opening can cause them to collapse. They should be well risen, golden, and hollow in the middle.",
+      "durationMinutes": 22,
+      "resource": "oven",
+      "ovenTempCelsius": 220,
+      "requiredEquipment": ["muffin-tin"],
+      "canPrepAhead": false,
+      "dependsOn": ["yorkshire-puddings-pour"],
+      "tags": ["cook"]
+    }
+  ],
+  "dietaryFlags": []
+}

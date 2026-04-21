@@ -1,0 +1,30 @@
+[
+  {
+    "id": "cranberry-sauce",
+    "name": "Cranberry Sauce",
+    "shoppingCategory": "condiments",
+    "shoppingListName": "Cranberry sauce (jar)",
+    "suggestedForMeats": ["chicken"]
+  },
+  {
+    "id": "mint-sauce",
+    "name": "Mint Sauce",
+    "shoppingCategory": "condiments",
+    "shoppingListName": "Mint sauce (jar)",
+    "suggestedForMeats": ["lamb"]
+  },
+  {
+    "id": "apple-sauce",
+    "name": "Apple Sauce",
+    "shoppingCategory": "condiments",
+    "shoppingListName": "Apple sauce (jar)",
+    "suggestedForMeats": ["pork"]
+  },
+  {
+    "id": "horseradish",
+    "name": "Horseradish Sauce",
+    "shoppingCategory": "condiments",
+    "shoppingListName": "Horseradish sauce (jar)",
+    "suggestedForMeats": ["beef"]
+  }
+]

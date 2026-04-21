@@ -1,0 +1,316 @@
+{
+  "chicken-whole": {
+    "name": "Whole chicken",
+    "defaultUnit": "kg",
+    "category": "meat-and-fish"
+  },
+  "chicken-thighs-bone-in": {
+    "name": "Chicken thighs (bone-in)",
+    "defaultUnit": "whole",
+    "category": "meat-and-fish"
+  },
+  "beef-topside-joint": {
+    "name": "Beef topside joint",
+    "defaultUnit": "kg",
+    "category": "meat-and-fish"
+  },
+  "beef-rib-bone-in": {
+    "name": "Rib of beef (bone-in)",
+    "defaultUnit": "kg",
+    "category": "meat-and-fish"
+  },
+  "lamb-leg": {
+    "name": "Leg of lamb",
+    "defaultUnit": "kg",
+    "category": "meat-and-fish"
+  },
+  "lamb-shoulder": {
+    "name": "Shoulder of lamb",
+    "defaultUnit": "kg",
+    "category": "meat-and-fish"
+  },
+  "pork-loin-joint": {
+    "name": "Pork loin joint",
+    "defaultUnit": "kg",
+    "category": "meat-and-fish"
+  },
+  "pork-belly": {
+    "name": "Pork belly",
+    "defaultUnit": "kg",
+    "category": "meat-and-fish"
+  },
+  "pork-sausages": {
+    "name": "Pork sausages (chipolatas)",
+    "defaultUnit": "whole",
+    "category": "meat-and-fish"
+  },
+  "streaky-bacon": {
+    "name": "Streaky bacon",
+    "defaultUnit": "whole",
+    "category": "meat-and-fish"
+  },
+
+  "potatoes-maris-piper": {
+    "name": "Maris Piper potatoes",
+    "defaultUnit": "g",
+    "category": "fresh-vegetables"
+  },
+  "potatoes-king-edward": {
+    "name": "King Edward potatoes",
+    "defaultUnit": "g",
+    "category": "fresh-vegetables"
+  },
+  "carrots": {
+    "name": "Carrots",
+    "defaultUnit": "g",
+    "category": "fresh-vegetables"
+  },
+  "parsnips": {
+    "name": "Parsnips",
+    "defaultUnit": "g",
+    "category": "fresh-vegetables"
+  },
+  "broccoli": {
+    "name": "Broccoli",
+    "defaultUnit": "g",
+    "category": "fresh-vegetables"
+  },
+  "green-beans": {
+    "name": "Green beans",
+    "defaultUnit": "g",
+    "category": "fresh-vegetables"
+  },
+  "peas-frozen": {
+    "name": "Frozen peas",
+    "defaultUnit": "g",
+    "category": "frozen"
+  },
+  "brussels-sprouts": {
+    "name": "Brussels sprouts",
+    "defaultUnit": "g",
+    "category": "fresh-vegetables"
+  },
+  "cauliflower": {
+    "name": "Cauliflower",
+    "defaultUnit": "whole",
+    "category": "fresh-vegetables"
+  },
+  "onion": {
+    "name": "Onion",
+    "defaultUnit": "whole",
+    "category": "fresh-vegetables"
+  },
+  "garlic": {
+    "name": "Garlic cloves",
+    "defaultUnit": "whole",
+    "category": "fresh-vegetables"
+  },
+  "lemon": {
+    "name": "Lemon",
+    "defaultUnit": "whole",
+    "category": "fresh-vegetables"
+  },
+  "fresh-thyme": {
+    "name": "Fresh thyme",
+    "defaultUnit": "whole",
+    "category": "fresh-vegetables"
+  },
+  "fresh-rosemary": {
+    "name": "Fresh rosemary",
+    "defaultUnit": "whole",
+    "category": "fresh-vegetables"
+  },
+  "fresh-sage": {
+    "name": "Fresh sage",
+    "defaultUnit": "whole",
+    "category": "fresh-vegetables"
+  },
+  "fresh-parsley": {
+    "name": "Fresh flat-leaf parsley",
+    "defaultUnit": "whole",
+    "category": "fresh-vegetables"
+  },
+
+  "butter-unsalted": {
+    "name": "Unsalted butter",
+    "defaultUnit": "g",
+    "category": "dairy-and-eggs"
+  },
+  "butter-salted": {
+    "name": "Salted butter",
+    "defaultUnit": "g",
+    "category": "dairy-and-eggs"
+  },
+  "eggs-large": {
+    "name": "Large eggs",
+    "defaultUnit": "whole",
+    "category": "dairy-and-eggs"
+  },
+  "whole-milk": {
+    "name": "Whole milk",
+    "defaultUnit": "ml",
+    "category": "dairy-and-eggs"
+  },
+  "double-cream": {
+    "name": "Double cream",
+    "defaultUnit": "ml",
+    "category": "dairy-and-eggs"
+  },
+  "cheddar-cheese": {
+    "name": "Mature Cheddar cheese",
+    "defaultUnit": "g",
+    "category": "dairy-and-eggs"
+  },
+
+  "plain-flour": {
+    "name": "Plain flour",
+    "defaultUnit": "g",
+    "category": "storecupboard"
+  },
+  "self-raising-flour": {
+    "name": "Self-raising flour",
+    "defaultUnit": "g",
+    "category": "storecupboard"
+  },
+  "olive-oil": {
+    "name": "Olive oil",
+    "defaultUnit": "ml",
+    "category": "storecupboard"
+  },
+  "vegetable-oil": {
+    "name": "Vegetable oil",
+    "defaultUnit": "ml",
+    "category": "storecupboard"
+  },
+  "sunflower-oil": {
+    "name": "Sunflower oil",
+    "defaultUnit": "ml",
+    "category": "storecupboard"
+  },
+  "goose-fat": {
+    "name": "Goose fat",
+    "defaultUnit": "g",
+    "category": "storecupboard"
+  },
+  "beef-dripping": {
+    "name": "Beef dripping",
+    "defaultUnit": "g",
+    "category": "storecupboard"
+  },
+  "salt": {
+    "name": "Fine sea salt",
+    "defaultUnit": "tsp",
+    "category": "storecupboard"
+  },
+  "black-pepper": {
+    "name": "Black pepper",
+    "defaultUnit": "tsp",
+    "category": "storecupboard"
+  },
+  "chicken-stock-cube": {
+    "name": "Chicken stock cube",
+    "defaultUnit": "whole",
+    "category": "storecupboard"
+  },
+  "beef-stock-cube": {
+    "name": "Beef stock cube",
+    "defaultUnit": "whole",
+    "category": "storecupboard"
+  },
+  "vegetable-stock-cube": {
+    "name": "Vegetable stock cube",
+    "defaultUnit": "whole",
+    "category": "storecupboard"
+  },
+  "dried-sage": {
+    "name": "Dried sage",
+    "defaultUnit": "tsp",
+    "category": "storecupboard"
+  },
+  "dried-thyme": {
+    "name": "Dried thyme",
+    "defaultUnit": "tsp",
+    "category": "storecupboard"
+  },
+  "dried-rosemary": {
+    "name": "Dried rosemary",
+    "defaultUnit": "tsp",
+    "category": "storecupboard"
+  },
+  "mustard-powder": {
+    "name": "Mustard powder",
+    "defaultUnit": "tsp",
+    "category": "storecupboard"
+  },
+  "honey": {
+    "name": "Honey",
+    "defaultUnit": "tbsp",
+    "category": "storecupboard"
+  },
+  "semolina": {
+    "name": "Semolina",
+    "defaultUnit": "g",
+    "category": "storecupboard"
+  },
+  "baking-powder": {
+    "name": "Baking powder",
+    "defaultUnit": "tsp",
+    "category": "storecupboard"
+  },
+  "white-wine": {
+    "name": "White wine (dry)",
+    "defaultUnit": "ml",
+    "category": "storecupboard"
+  },
+  "red-wine": {
+    "name": "Red wine",
+    "defaultUnit": "ml",
+    "category": "storecupboard"
+  },
+  "worcestershire-sauce": {
+    "name": "Worcestershire sauce",
+    "defaultUnit": "tsp",
+    "category": "storecupboard"
+  },
+  "cornflour": {
+    "name": "Cornflour",
+    "defaultUnit": "g",
+    "category": "storecupboard"
+  },
+  "breadcrumbs-fresh": {
+    "name": "Fresh breadcrumbs",
+    "defaultUnit": "g",
+    "category": "bakery"
+  },
+
+  "cranberry-sauce": {
+    "name": "Cranberry sauce",
+    "defaultUnit": "whole",
+    "category": "condiments"
+  },
+  "mint-sauce": {
+    "name": "Mint sauce",
+    "defaultUnit": "whole",
+    "category": "condiments"
+  },
+  "apple-sauce": {
+    "name": "Apple sauce",
+    "defaultUnit": "whole",
+    "category": "condiments"
+  },
+  "horseradish-sauce": {
+    "name": "Horseradish sauce",
+    "defaultUnit": "whole",
+    "category": "condiments"
+  },
+  "english-mustard": {
+    "name": "English mustard",
+    "defaultUnit": "whole",
+    "category": "condiments"
+  },
+  "redcurrant-jelly": {
+    "name": "Redcurrant jelly",
+    "defaultUnit": "whole",
+    "category": "condiments"
+  }
+}
