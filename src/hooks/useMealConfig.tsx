@@ -22,6 +22,7 @@ export interface MealConfigState {
   gravy: SideSelection | null;
   ovenTempDisplay: OvenTempDisplay;
   prepAheadSteps: string[];
+  checkedShoppingItems: string[];
 }
 
 const STORAGE_KEY = "roast-dinner-config";
@@ -38,6 +39,7 @@ const defaultState: MealConfigState = {
   gravy: null,
   ovenTempDisplay: "celsius-fan",
   prepAheadSteps: [],
+  checkedShoppingItems: [],
 };
 
 function loadState(): MealConfigState {
@@ -70,6 +72,8 @@ interface MealConfigContextValue {
   setGravy: (g: SideSelection | null) => void;
   setOvenTempDisplay: (d: OvenTempDisplay) => void;
   setPrepAheadSteps: (s: string[]) => void;
+  toggleShoppingItem: (id: string) => void;
+  setCheckedShoppingItems: (items: string[]) => void;
   resetConfig: () => void;
 }
 
@@ -180,6 +184,20 @@ export function MealConfigProvider({ children }: { children: ReactNode }) {
     [update],
   );
 
+  const toggleShoppingItem = useCallback((id: string) => {
+    setState((prev) => ({
+      ...prev,
+      checkedShoppingItems: prev.checkedShoppingItems.includes(id)
+        ? prev.checkedShoppingItems.filter((i) => i !== id)
+        : [...prev.checkedShoppingItems, id],
+    }));
+  }, []);
+
+  const setCheckedShoppingItems = useCallback(
+    (checkedShoppingItems: string[]) => update({ checkedShoppingItems }),
+    [update],
+  );
+
   const resetConfig = useCallback(() => {
     setState(defaultState);
   }, []);
@@ -202,6 +220,8 @@ export function MealConfigProvider({ children }: { children: ReactNode }) {
         setGravy,
         setOvenTempDisplay,
         setPrepAheadSteps,
+        toggleShoppingItem,
+        setCheckedShoppingItems,
         resetConfig,
       }}
     >
