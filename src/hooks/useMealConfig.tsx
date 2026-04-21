@@ -6,7 +6,12 @@ import {
   useCallback,
   type ReactNode,
 } from "react";
-import type { Doneness, OvenTempDisplay, SideSelection } from "@/types/recipe";
+import type {
+  Doneness,
+  MealConfig,
+  OvenTempDisplay,
+  SideSelection,
+} from "@/types/recipe";
 
 // ─── State Shape ────────────────────────────────────────────────────
 
@@ -74,6 +79,7 @@ interface MealConfigContextValue {
   setPrepAheadSteps: (s: string[]) => void;
   toggleShoppingItem: (id: string) => void;
   setCheckedShoppingItems: (items: string[]) => void;
+  hydrateFromMealConfig: (config: MealConfig) => void;
   resetConfig: () => void;
 }
 
@@ -198,6 +204,23 @@ export function MealConfigProvider({ children }: { children: ReactNode }) {
     [update],
   );
 
+  const hydrateFromMealConfig = useCallback((config: MealConfig) => {
+    setState((prev) => ({
+      ...prev,
+      ovenCavities: config.ovenCavities,
+      meatCutId: config.meat.cutId,
+      doneness: config.meat.doneness ?? null,
+      actualWeightKg: config.meat.actualWeightKg,
+      servings: config.servings,
+      servingTime: config.servingTime,
+      sides: config.sides,
+      condiments: config.condiments,
+      gravy: config.gravy,
+      ovenTempDisplay: config.ovenTempDisplay,
+      prepAheadSteps: config.prepAheadSteps,
+    }));
+  }, []);
+
   const resetConfig = useCallback(() => {
     setState(defaultState);
   }, []);
@@ -222,6 +245,7 @@ export function MealConfigProvider({ children }: { children: ReactNode }) {
         setPrepAheadSteps,
         toggleShoppingItem,
         setCheckedShoppingItems,
+        hydrateFromMealConfig,
         resetConfig,
       }}
     >

@@ -1,12 +1,14 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { MealConfigProvider } from "@/hooks/useMealConfig";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster } from "@/components/ui/sonner";
 import SetupPage from "@/pages/SetupPage";
 import ConfigurePage from "@/pages/ConfigurePage";
 import ShoppingPage from "@/pages/ShoppingPage";
 import ReviewPage from "@/pages/ReviewPage";
 import CookPage from "@/pages/CookPage";
 import DonePage from "@/pages/DonePage";
+import SharedPlanPage from "@/pages/SharedPlanPage";
 
 function App() {
   return (
@@ -21,9 +23,11 @@ function App() {
               <Route path="/review" element={<ReviewPage />} />
               <Route path="/cook" element={<CookPage />} />
               <Route path="/done" element={<DonePage />} />
+              <Route path="/p/:planId" element={<SharedPlanPage />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </div>
+          <Toaster />
         </MealConfigProvider>
       </TooltipProvider>
     </BrowserRouter>
