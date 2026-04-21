@@ -59,9 +59,9 @@ function TimerBanner({
   onDismiss: () => void;
 }) {
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between gap-2 bg-orange-500 px-4 py-3 text-white shadow-lg animate-in slide-in-from-top">
+    <div role="alert" className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between gap-2 bg-orange-500 px-4 py-3 text-white shadow-lg animate-in slide-in-from-top">
       <div className="flex items-center gap-2">
-        <Timer className="size-5 shrink-0" />
+        <Timer className="size-5 shrink-0" aria-hidden="true" />
         <span className="font-medium text-sm">{message}</span>
       </div>
       <Button
@@ -69,6 +69,7 @@ function TimerBanner({
         size="icon-xs"
         onClick={onDismiss}
         className="text-white hover:bg-orange-600"
+        aria-label="Dismiss timer alert"
       >
         <X className="size-4" />
       </Button>
@@ -241,10 +242,12 @@ function CurrentStepCard({
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium flex items-center gap-1.5">
-                <Timer className="size-4" />
+                <Timer className="size-4" aria-hidden="true" />
                 {timerExpired ? "Timer complete!" : "Time remaining"}
               </span>
               <span
+                aria-live="polite"
+                aria-atomic="true"
                 className={cn(
                   "text-2xl font-bold tabular-nums",
                   timerExpired && "text-orange-500",
@@ -253,7 +256,7 @@ function CurrentStepCard({
                 {formatCountdown(Math.max(0, timerSeconds))}
               </span>
             </div>
-            <Progress value={progress} />
+            <Progress value={progress} aria-label={`Step progress: ${Math.round(progress)}%`} />
           </div>
         )}
 
@@ -467,7 +470,7 @@ export default function CookPage() {
   if (!session.schedule || !session.isActive) {
     if (!config) {
       return (
-        <div className="container mx-auto max-w-2xl px-4 py-8 text-center">
+        <main id="main-content" className="container mx-auto max-w-2xl px-4 py-8 text-center">
           <StepIndicator currentPath="/cook" />
           <p className="mt-8 text-muted-foreground">
             Please configure your meal first.
@@ -479,15 +482,15 @@ export default function CookPage() {
           >
             Go to Configuration
           </Button>
-        </div>
+        </main>
       );
     }
 
     return (
-      <div className="container mx-auto max-w-2xl px-4 py-8 text-center">
+      <main id="main-content" className="container mx-auto max-w-2xl px-4 py-8 text-center">
         <StepIndicator currentPath="/cook" />
         <p className="mt-8 text-muted-foreground">Starting cooking session…</p>
-      </div>
+      </main>
     );
   }
 
@@ -519,7 +522,7 @@ export default function CookPage() {
   );
 
   return (
-    <div className="container mx-auto max-w-5xl px-4 py-4">
+    <main id="main-content" className="container mx-auto max-w-5xl px-4 py-4">
       {/* Timer banner */}
       {timerBanner && (
         <TimerBanner
@@ -530,9 +533,11 @@ export default function CookPage() {
 
       <StepIndicator currentPath="/cook" />
 
+      <h1 className="sr-only">Cooking Session</h1>
+
       {/* Overall progress */}
       <div className="mt-4 flex items-center gap-3">
-        <Progress value={overallProgress} className="flex-1" />
+        <Progress value={overallProgress} className="flex-1" aria-label={`Overall progress: ${completedCount} of ${effectiveSteps.length} steps complete`} />
         <span className="text-xs text-muted-foreground tabular-nums whitespace-nowrap">
           {completedCount}/{effectiveSteps.length} steps
         </span>
@@ -741,6 +746,7 @@ export default function CookPage() {
               placeholder="Custom minutes"
               value={customLateMinutes}
               onChange={(e) => setCustomLateMinutes(e.target.value)}
+              aria-label="Custom late offset in minutes"
             />
             <Button
               onClick={() =>
@@ -760,6 +766,6 @@ export default function CookPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </div>
+    </main>
   );
 }

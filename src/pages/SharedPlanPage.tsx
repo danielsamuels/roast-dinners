@@ -24,7 +24,7 @@ export default function SharedPlanPage() {
 
   if (error) {
     return (
-      <div className="container mx-auto flex max-w-md flex-col items-center gap-4 px-4 py-16 text-center">
+      <main id="main-content" className="container mx-auto flex max-w-md flex-col items-center gap-4 px-4 py-16 text-center">
         <h1 className="text-2xl font-bold">Plan Not Found</h1>
         <p className="text-muted-foreground">
           {navigator.onLine
@@ -37,16 +37,16 @@ export default function SharedPlanPage() {
         >
           Start a new plan
         </button>
-      </div>
+      </main>
     );
   }
 
   if (isSharing) {
     return (
-      <div className="container mx-auto flex max-w-md flex-col items-center gap-4 px-4 py-16 text-center">
-        <div className="border-primary h-8 w-8 animate-spin rounded-full border-4 border-t-transparent" />
-        <p className="text-muted-foreground">Loading shared plan…</p>
-      </div>
+      <main id="main-content" className="container mx-auto flex max-w-md flex-col items-center gap-4 px-4 py-16 text-center">
+        <div className="border-primary h-8 w-8 animate-spin rounded-full border-4 border-t-transparent" aria-hidden="true" />
+        <p className="text-muted-foreground" role="status">Loading shared plan…</p>
+      </main>
     );
   }
 

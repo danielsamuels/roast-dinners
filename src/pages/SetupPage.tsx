@@ -23,13 +23,13 @@ export default function SetupPage() {
   const { state, setOvenCavities } = useMealConfig();
 
   return (
-    <div className="container mx-auto max-w-2xl px-4 py-6">
+    <main id="main-content" className="container mx-auto max-w-2xl px-4 py-6">
       <StepIndicator currentPath="/" />
 
       {/* Hero */}
       <div className="mt-8 flex flex-col items-center text-center">
         <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10">
-          <ChefHat className="size-8 text-primary" />
+          <ChefHat className="size-8 text-primary" aria-hidden="true" />
         </div>
         <h1 className="mt-4 text-3xl font-bold tracking-tight">
           Plan Your Roast Dinner
@@ -46,8 +46,8 @@ export default function SetupPage() {
           <div className="flex items-center gap-2">
             <h2 className="text-lg font-semibold">Oven Cavities</h2>
             <Tooltip>
-              <TooltipTrigger className="inline-flex">
-                <HelpCircle className="size-4 text-muted-foreground" />
+              <TooltipTrigger className="inline-flex" aria-label="More info about oven cavities">
+                <HelpCircle className="size-4 text-muted-foreground" aria-hidden="true" />
               </TooltipTrigger>
               <TooltipContent side="bottom" className="max-w-xs">
                 A standard kitchen oven has 1 cavity. A double oven or range
@@ -60,11 +60,13 @@ export default function SetupPage() {
             How many independent oven compartments do you have?
           </p>
 
-          <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4" role="radiogroup" aria-label="Number of oven cavities">
             {CAVITY_OPTIONS.map((opt) => (
               <button
                 key={opt.value}
                 onClick={() => setOvenCavities(opt.value)}
+                role="radio"
+                aria-checked={state.ovenCavities === opt.value}
                 className={cn(
                   "flex min-h-[72px] flex-col items-center justify-center gap-1 rounded-xl border-2 p-3 text-center transition-all active:scale-[0.97]",
                   state.ovenCavities === opt.value
@@ -90,9 +92,9 @@ export default function SetupPage() {
           className="min-h-[48px] gap-2 px-6 text-base"
         >
           Next
-          <ArrowRight className="size-4" />
+          <ArrowRight className="size-4" aria-hidden="true" />
         </Button>
       </div>
-    </div>
+    </main>
   );
 }

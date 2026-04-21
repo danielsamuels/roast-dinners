@@ -141,7 +141,7 @@ export default function ConfigurePage() {
   };
 
   return (
-    <div className="container mx-auto max-w-2xl px-4 py-6 pb-28">
+    <main id="main-content" className="container mx-auto max-w-2xl px-4 py-6 pb-28">
       <StepIndicator currentPath="/configure" />
 
       <h1 className="mt-6 text-2xl font-bold tracking-tight">
@@ -287,6 +287,7 @@ export default function ConfigurePage() {
               onClick={() => setServings(Math.max(1, state.servings - 1))}
               disabled={state.servings <= 1}
               className="h-12 w-12"
+              aria-label="Decrease servings"
             >
               <Minus className="size-5" />
             </Button>
@@ -302,6 +303,7 @@ export default function ConfigurePage() {
               onClick={() => setServings(Math.min(12, state.servings + 1))}
               disabled={state.servings >= 12}
               className="h-12 w-12"
+              aria-label="Increase servings"
             >
               <Plus className="size-5" />
             </Button>
@@ -340,6 +342,7 @@ export default function ConfigurePage() {
                 }}
                 placeholder={suggestedWeight?.toString() ?? ""}
                 className="h-12 max-w-[150px] text-lg"
+                aria-label="Joint weight in kilograms"
               />
               <span className="text-lg text-muted-foreground">kg</span>
             </div>
@@ -358,6 +361,7 @@ export default function ConfigurePage() {
             value={state.servingTime}
             onChange={(e) => setServingTime(e.target.value)}
             className="h-12 max-w-[180px] text-lg"
+            aria-label="Serving time"
           />
         </CardContent>
       </Card>
@@ -559,7 +563,7 @@ export default function ConfigurePage() {
           onClick={() => navigate("/")}
           className="min-h-[48px] gap-2"
         >
-          <ArrowLeft className="size-4" />
+          <ArrowLeft className="size-4" aria-hidden="true" />
           Back
         </Button>
         <Button
@@ -569,9 +573,9 @@ export default function ConfigurePage() {
           className="min-h-[48px] gap-2 px-6 text-base"
         >
           View Shopping List
-          <ArrowRight className="size-4" />
+          <ArrowRight className="size-4" aria-hidden="true" />
         </Button>
       </div>
-    </div>
+    </main>
   );
 }

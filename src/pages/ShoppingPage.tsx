@@ -240,13 +240,13 @@ export default function ShoppingPage() {
     shoppingList.buyOnlyItems.filter((i) => checkedBuyOnly.has(i.id)).length;
 
   return (
-    <div className="container mx-auto max-w-2xl px-4 pb-24">
+    <main id="main-content" className="container mx-auto max-w-2xl px-4 pb-24">
       <StepIndicator currentPath="/shopping" />
 
       {/* Summary */}
       <div className="mt-4 mb-6">
         <div className="flex items-center gap-2 mb-1">
-          <ShoppingCart className="size-5 text-primary" />
+          <ShoppingCart className="size-5 text-primary" aria-hidden="true" />
           <h1 className="text-xl font-bold tracking-tight">Shopping List</h1>
         </div>
         <p className="text-sm text-muted-foreground">
@@ -330,7 +330,7 @@ export default function ShoppingPage() {
             onClick={handleCopy}
             className="flex-1"
           >
-            <Copy className="size-3.5 mr-1.5" />
+            <Copy className="size-3.5 mr-1.5" aria-hidden="true" />
             {copied ? "Copied!" : "Copy List"}
           </Button>
           <Button
@@ -339,7 +339,7 @@ export default function ShoppingPage() {
             onClick={handleShare}
             className="flex-1"
           >
-            <Share2 className="size-3.5 mr-1.5" />
+            <Share2 className="size-3.5 mr-1.5" aria-hidden="true" />
             Share
           </Button>
         </div>
@@ -349,15 +349,15 @@ export default function ShoppingPage() {
       <div className="fixed bottom-0 left-0 right-0 border-t bg-background/95 backdrop-blur-sm">
         <div className="container mx-auto flex max-w-2xl items-center justify-between px-4 py-3">
           <Button variant="ghost" size="sm" onClick={() => navigate("/configure")}>
-            <ArrowLeft className="size-4 mr-1.5" />
+            <ArrowLeft className="size-4 mr-1.5" aria-hidden="true" />
             Back
           </Button>
           <Button size="sm" onClick={() => navigate("/review")}>
             Review Plan
-            <ArrowRight className="size-4 ml-1.5" />
+            <ArrowRight className="size-4 ml-1.5" aria-hidden="true" />
           </Button>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

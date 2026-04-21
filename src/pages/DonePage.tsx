@@ -17,8 +17,8 @@ export default function DonePage() {
   };
 
   return (
-    <div className="container mx-auto max-w-md px-4 py-12 text-center">
-      <div className="text-8xl animate-bounce">🎉</div>
+    <main id="main-content" className="container mx-auto max-w-md px-4 py-12 text-center">
+      <div className="text-8xl animate-bounce" aria-hidden="true">🎉</div>
 
       <h1 className="mt-6 text-4xl font-bold tracking-tight">
         Your Roast Dinner is Ready!
@@ -31,7 +31,7 @@ export default function DonePage() {
       <Card className="mt-8">
         <CardContent className="py-6 space-y-3">
           <p className="text-sm text-muted-foreground">
-            🍽️ Time to plate up and enjoy with your guests.
+            <span aria-hidden="true">🍽️</span> Time to plate up and enjoy with your guests.
           </p>
           <p className="text-sm text-muted-foreground">
             Don't forget the gravy!
@@ -41,10 +41,10 @@ export default function DonePage() {
 
       <div className="mt-8 flex flex-col items-center gap-3">
         <Button size="lg" onClick={handlePlanAnother}>
-          <RotateCcw className="size-4" data-icon="inline-start" />
+          <RotateCcw className="size-4" aria-hidden="true" data-icon="inline-start" />
           Plan Another Roast
         </Button>
       </div>
-    </div>
+    </main>
   );
 }

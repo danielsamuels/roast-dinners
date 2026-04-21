@@ -91,7 +91,7 @@ export default function ReviewPage() {
 
   if (!config || !schedule || !meatCut) {
     return (
-      <div className="container mx-auto max-w-2xl px-4 py-8">
+      <main id="main-content" className="container mx-auto max-w-2xl px-4 py-8">
         <StepIndicator currentPath="/review" />
         <div className="mt-8 text-center">
           <p className="text-muted-foreground">
@@ -105,7 +105,7 @@ export default function ReviewPage() {
             Go to Configuration
           </Button>
         </div>
-      </div>
+      </main>
     );
   }
 
@@ -113,7 +113,7 @@ export default function ReviewPage() {
   const totalMins = schedule.totalDuration % 60;
 
   return (
-    <div className="container mx-auto max-w-2xl px-4 py-8">
+    <main id="main-content" className="container mx-auto max-w-2xl px-4 py-8">
       <StepIndicator currentPath="/review" />
 
       <h1 className="mt-6 text-3xl font-bold tracking-tight">
@@ -318,9 +318,9 @@ export default function ReviewPage() {
         <div className="flex-1" />
         <Button size="lg" onClick={handleStartCooking}>
           Start Cooking
-          <ArrowRight className="size-4" data-icon="inline-end" />
+          <ArrowRight className="size-4" aria-hidden="true" data-icon="inline-end" />
         </Button>
       </div>
-    </div>
+    </main>
   );
 }
