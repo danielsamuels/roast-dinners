@@ -7,6 +7,7 @@ import type { MealConfigState } from "@/hooks/useMealConfig";
  */
 export function buildMealConfig(state: MealConfigState): MealConfig | null {
   if (!state.meatCutId || !state.actualWeightKg) return null;
+  if (state.servings < 1 || state.ovenCavities < 1) return null;
 
   return {
     ovenCavities: state.ovenCavities,

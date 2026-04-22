@@ -69,7 +69,10 @@ export function calculateMeatRoastDuration(
   }
 
   const donenessTime = perWeight.doneness[donenessKey!];
-  if (!donenessTime) return 0;
+  if (!donenessTime) {
+    // Malformed recipe data — no doneness entries. Use a safe fallback.
+    return Math.round(40 * actualWeightKg + 20);
+  }
 
   return Math.round(
     donenessTime.minutesPerKg * actualWeightKg + donenessTime.baseMinutes,

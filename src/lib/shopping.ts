@@ -162,17 +162,18 @@ export function generateShoppingList(
   }));
 
   // 7. Add the meat itself
-  if (meatCut && config.actualWeightKg) {
-    const meatIngredient = catalogue[meatCut.ingredients[0]?.ingredientId];
+  if (meatCut && config.actualWeightKg && meatCut.ingredients.length > 0) {
+    const meatRef = meatCut.ingredients[0];
+    const meatIngredient = catalogue[meatRef.ingredientId];
     if (meatIngredient) {
       items.unshift({
-        ingredientId: meatCut.ingredients[0].ingredientId,
+        ingredientId: meatRef.ingredientId,
         name: meatIngredient.name,
         quantity: config.actualWeightKg,
         unit: "kg",
         category: "meat-and-fish",
         fromDishes: [meatCut.name],
-        isChecked: checkedSet.has(meatCut.ingredients[0].ingredientId),
+        isChecked: checkedSet.has(meatRef.ingredientId),
       });
     }
   }
