@@ -218,7 +218,12 @@ export default function CookingDayPage() {
         </Button>
         <Button
           size="lg"
-          onClick={() => navigate("/review")}
+          onClick={() => {
+            if (state.actualWeightKg === null && suggestedWeight !== null) {
+              setActualWeightKg(suggestedWeight);
+            }
+            navigate("/review");
+          }}
           disabled={!canProceed}
           className="min-h-[48px] gap-2 px-6 text-base"
         >
