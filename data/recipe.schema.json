@@ -271,7 +271,7 @@
         "name": { "type": "string", "minLength": 1 },
         "defaultUnit": {
           "type": "string",
-          "enum": ["g", "ml", "whole", "tsp", "tbsp", "kg"]
+          "enum": ["g", "ml", "whole", "tsp", "tbsp", "kg", "sprigs", "leaves", "cloves", "jar"]
         },
         "category": { "$ref": "#/definitions/shoppingCategory" }
       },

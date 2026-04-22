@@ -61,7 +61,10 @@ export function formatQuantity(quantity: number, unit: string): string {
   const display = rounded % 1 === 0 ? rounded.toString() : rounded.toFixed(1);
 
   if (unit === "whole") return display;
-  return `${display}${unit}`;
+  // Units that are abbreviations (g, ml, kg, tsp, tbsp) — no space
+  const noSpaceUnits = new Set(["g", "ml", "kg", "tsp", "tbsp"]);
+  const separator = noSpaceUnits.has(unit) ? "" : " ";
+  return `${display}${separator}${unit}`;
 }
 
 // ─── Generator ──────────────────────────────────────────────────────
