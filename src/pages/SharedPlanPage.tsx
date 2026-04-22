@@ -8,11 +8,11 @@ export default function SharedPlanPage() {
   const navigate = useNavigate();
   const { hydrateFromMealConfig } = useMealConfig();
   const { loadSharedPlan, isSharing, error } = useSharePlan();
-  const loadedRef = useRef(false);
+  const lastLoadedPlanId = useRef<string | null>(null);
 
   useEffect(() => {
-    if (!planId || loadedRef.current) return;
-    loadedRef.current = true;
+    if (!planId || lastLoadedPlanId.current === planId) return;
+    lastLoadedPlanId.current = planId;
 
     loadSharedPlan(planId).then((config) => {
       if (config) {
@@ -21,6 +21,10 @@ export default function SharedPlanPage() {
       }
     });
   }, [planId, loadSharedPlan, hydrateFromMealConfig, navigate]);
+
+  const handleRetry = () => {
+    lastLoadedPlanId.current = null;
+  };
 
   if (error) {
     return (
@@ -31,6 +35,12 @@ export default function SharedPlanPage() {
             ? "This plan may have expired or the link is invalid."
             : "You appear to be offline. Please check your connection and try again."}
         </p>
+        <button
+          onClick={handleRetry}
+          className="text-primary underline underline-offset-4"
+        >
+          Try again
+        </button>
         <button
           onClick={() => navigate("/")}
           className="text-primary underline underline-offset-4"

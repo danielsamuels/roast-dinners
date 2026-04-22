@@ -331,7 +331,7 @@ export default function CookPage() {
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
-      wakeLockRef.current?.release();
+      try { wakeLockRef.current?.release(); } catch { /* already released */ }
       wakeLockRef.current = null;
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };

@@ -34,6 +34,9 @@ const STORAGE_KEY = "roast-dinner-cooking-session";
 
 function rehydrateSchedule(json: string): ScheduleResult {
   const data = JSON.parse(json);
+  if (!data || !Array.isArray(data.steps)) {
+    throw new Error("Invalid schedule data");
+  }
   return {
     ...data,
     servingTime: new Date(data.servingTime),
