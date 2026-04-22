@@ -196,7 +196,6 @@ function CurrentStepGroup({
   totalGroups,
   completedStepIds,
   dishColorMap,
-  timerSeconds,
   ovenTempDisplay,
   lateOffset,
   onCompleteStep,
@@ -206,7 +205,6 @@ function CurrentStepGroup({
   totalGroups: number;
   completedStepIds: string[];
   dishColorMap: Map<string, DishColor>;
-  timerSeconds: number | null;
   ovenTempDisplay: string;
   lateOffset: number;
   onCompleteStep: (stepId: string) => void;
@@ -226,14 +224,6 @@ function CurrentStepGroup({
     lateOffset,
   );
 
-  const longestDuration = Math.max(...steps.map((s) => s.durationMinutes));
-  const totalSec = longestDuration * 60;
-  const progress =
-    timerSeconds !== null && totalSec > 0
-      ? Math.max(0, ((totalSec - timerSeconds) / totalSec) * 100)
-      : 0;
-  const timerExpired = timerSeconds !== null && timerSeconds <= 0;
-
   const primaryColor = dishColorMap.get(steps[0].dishId);
 
   return (
@@ -241,7 +231,6 @@ function CurrentStepGroup({
       className={cn(
         "border-2 transition-colors",
         primaryColor?.border,
-        timerExpired && "border-orange-400 dark:border-orange-600",
       )}
     >
       <CardHeader>
@@ -334,32 +323,6 @@ function CurrentStepGroup({
             );
           })}
         </div>
-
-        {/* Timer */}
-        {timerSeconds !== null && (
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium flex items-center gap-1.5">
-                <Timer className="size-4" aria-hidden="true" />
-                {timerExpired ? "Timer complete!" : "Time remaining"}
-              </span>
-              <span
-                aria-live="polite"
-                aria-atomic="true"
-                className={cn(
-                  "text-2xl font-bold tabular-nums",
-                  timerExpired && "text-orange-500",
-                )}
-              >
-                {formatCountdown(Math.max(0, timerSeconds))}
-              </span>
-            </div>
-            <Progress
-              value={progress}
-              aria-label={`Step progress: ${Math.round(progress)}%`}
-            />
-          </div>
-        )}
       </CardContent>
     </Card>
   );
@@ -485,47 +448,64 @@ export default function CookPage() {
   }, [effectiveSteps, session.completedStepIds]);
 
   // ── Timer Logic ──
-  // Timer resets when the group changes, not when individual steps are completed.
-  const currentGroupKey = currentGroupIndex >= 0 ? currentGroupIndex : null;
-  const longestGroupDuration = useMemo(() => {
-    if (!currentGroup) return 0;
-    return Math.max(...currentGroup.steps.map((s) => s.durationMinutes));
-  }, [currentGroup]);
-  const currentGroupSummary = useMemo(() => {
-    if (!currentGroup) return "";
-    if (currentGroup.steps.length === 1) return currentGroup.steps[0].summary;
-    return `${currentGroup.steps.length} steps`;
-  }, [currentGroup]);
+  // Determine if user should wait: current group fully done but next group not due yet
+  const currentGroupAllDone = useMemo(() => {
+    if (!currentGroup) return false;
+    return currentGroup.steps.every((s) => session.completedStepIds.includes(s.stepId));
+  }, [currentGroup, session.completedStepIds]);
 
+  // Next group = the group after the current one (the one with pending steps)
+  const nextPendingGroupIndex = useMemo(() => {
+    if (currentGroupIndex < 0) return -1;
+    // If the current group still has pending steps, the "next" is the one after
+    if (!currentGroupAllDone) {
+      return currentGroupIndex + 1 < groups.length ? currentGroupIndex + 1 : -1;
+    }
+    // If current group is done, look for next group with any uncompleted steps
+    for (let i = currentGroupIndex + 1; i < groups.length; i++) {
+      if (groups[i].steps.some((s) => !session.completedStepIds.includes(s.stepId))) {
+        return i;
+      }
+    }
+    return -1;
+  }, [currentGroupIndex, currentGroupAllDone, groups, session.completedStepIds]);
+
+  const nextGroup = nextPendingGroupIndex >= 0 ? groups[nextPendingGroupIndex] : undefined;
+
+  // Count down seconds until the next group's scheduled start time
   useEffect(() => {
-    if (currentGroupKey === null || longestGroupDuration <= 0) return;
+    if (!nextGroup) return;
 
-    const totalSeconds = longestGroupDuration * 60;
-    const startedAt = Date.now();
+    const targetTime = addMinutesToDate(nextGroup.time, session.lateOffsetMinutes);
     let beepDone = false;
 
     const tick = () => {
-      const elapsed = Math.floor((Date.now() - startedAt) / 1000);
-      const remaining = Math.max(0, totalSeconds - elapsed);
+      const remaining = Math.max(0, Math.floor((targetTime.getTime() - Date.now()) / 1000));
       setTimerSeconds(remaining);
 
       if (remaining === 0 && !beepDone) {
         beepDone = true;
         playBeep();
-        sendNotification("⏰ Timer Done!", `${currentGroupSummary} is ready`);
-        setTimerBanner(`${currentGroupSummary} — timer complete!`);
+        const nextSummary = nextGroup.steps.length === 1
+          ? nextGroup.steps[0].summary
+          : `${nextGroup.steps.length} steps`;
+        sendNotification("⏲️ Time for next step!", nextSummary);
+        setTimerBanner(`Time to start: ${nextSummary}`);
       }
     };
 
-    // Immediate async tick to set initial value, then regular interval
     const firstTick = setTimeout(tick, 0);
     const interval = setInterval(tick, 1000);
 
     return () => {
       clearTimeout(firstTick);
       clearInterval(interval);
+      setTimerSeconds(null);
     };
-  }, [currentGroupKey, longestGroupDuration, currentGroupSummary]);
+  }, [nextGroup, session.lateOffsetMinutes]);
+
+  // Whether the user should be waiting (current group done, next group not due)
+  const isWaiting = currentGroupAllDone && nextGroup && (timerSeconds ?? 0) > 0;
 
   // Auto-scroll timeline to current group
   useEffect(() => {
@@ -653,6 +633,23 @@ export default function CookPage() {
         </span>
       </div>
 
+      {/* Top-level timer — countdown to next step group */}
+      {timerSeconds !== null && timerSeconds > 0 && nextGroup && (
+        <div className="mt-3 flex items-center justify-between rounded-lg border bg-muted/30 px-4 py-3">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Timer className="size-4" aria-hidden="true" />
+            <span>Next step at {formatTime(addMinutesToDate(nextGroup.time, session.lateOffsetMinutes))}</span>
+          </div>
+          <span
+            aria-live="polite"
+            aria-atomic="true"
+            className="text-xl font-bold tabular-nums"
+          >
+            {formatCountdown(timerSeconds)}
+          </span>
+        </div>
+      )}
+
       {/* Action bar */}
       <div className="mt-3 flex flex-wrap items-center gap-2">
         <Button variant="outline" size="sm" onClick={() => setLateOpen(true)}>
@@ -686,14 +683,31 @@ export default function CookPage() {
 
         {/* Right: Current step group */}
         <div>
-          {currentGroup ? (
+          {isWaiting ? (
+            <Card className="border-2 border-amber-300 dark:border-amber-600 bg-amber-50/50 dark:bg-amber-950/20">
+              <CardContent className="py-10 text-center space-y-3">
+                <div className="text-4xl">⏸️</div>
+                <p className="text-lg font-semibold">Wait for the next step</p>
+                <p className="text-sm text-muted-foreground">
+                  Next step group starts at{" "}
+                  <span className="font-medium text-foreground">
+                    {formatTime(addMinutesToDate(nextGroup!.time, session.lateOffsetMinutes))}
+                  </span>
+                </p>
+                {timerSeconds !== null && timerSeconds > 0 && (
+                  <p className="text-3xl font-bold tabular-nums" aria-live="polite" aria-atomic="true">
+                    {formatCountdown(timerSeconds)}
+                  </p>
+                )}
+              </CardContent>
+            </Card>
+          ) : currentGroup ? (
             <CurrentStepGroup
               group={currentGroup}
               groupIndex={currentGroupIndex}
               totalGroups={groups.length}
               completedStepIds={session.completedStepIds}
               dishColorMap={dishColorMap}
-              timerSeconds={timerSeconds}
               ovenTempDisplay={state.ovenTempDisplay}
               lateOffset={session.lateOffsetMinutes}
               onCompleteStep={handleCompleteStep}
@@ -714,14 +728,31 @@ export default function CookPage() {
       {/* ── Mobile: Single column ── */}
       <div className="mt-4 md:hidden space-y-4">
         {/* Current step group */}
-        {currentGroup ? (
+        {isWaiting ? (
+          <Card className="border-2 border-amber-300 dark:border-amber-600 bg-amber-50/50 dark:bg-amber-950/20">
+            <CardContent className="py-10 text-center space-y-3">
+              <div className="text-4xl">⏸️</div>
+              <p className="text-lg font-semibold">Wait for the next step</p>
+              <p className="text-sm text-muted-foreground">
+                Next step group starts at{" "}
+                <span className="font-medium text-foreground">
+                  {formatTime(addMinutesToDate(nextGroup!.time, session.lateOffsetMinutes))}
+                </span>
+              </p>
+              {timerSeconds !== null && timerSeconds > 0 && (
+                <p className="text-3xl font-bold tabular-nums" aria-live="polite" aria-atomic="true">
+                  {formatCountdown(timerSeconds)}
+                </p>
+              )}
+            </CardContent>
+          </Card>
+        ) : currentGroup ? (
           <CurrentStepGroup
             group={currentGroup}
             groupIndex={currentGroupIndex}
             totalGroups={groups.length}
             completedStepIds={session.completedStepIds}
             dishColorMap={dishColorMap}
-            timerSeconds={timerSeconds}
             ovenTempDisplay={state.ovenTempDisplay}
             lateOffset={session.lateOffsetMinutes}
             onCompleteStep={handleCompleteStep}
