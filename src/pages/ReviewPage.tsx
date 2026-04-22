@@ -248,7 +248,7 @@ export default function ReviewPage() {
           {timelineGroups.map((group, gi) => (
             <div key={gi} className="relative">
               {/* Time marker */}
-              <div className="absolute -left-[calc(1.5rem+1px)] top-0 flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground text-[10px] font-bold">
+              <div className="absolute -left-[calc(2.25rem+1px)] top-0 flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground text-[10px] font-bold">
                 {gi + 1}
               </div>
               <div className="text-xs font-semibold text-muted-foreground mb-2">
