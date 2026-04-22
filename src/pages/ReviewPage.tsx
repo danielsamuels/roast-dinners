@@ -310,7 +310,7 @@ export default function ReviewPage() {
 
           {/* Serving time marker */}
           <div className="relative">
-            <div className="absolute -left-[calc(1.5rem+1px)] top-0 flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs">
+            <div className="absolute -left-[calc(2.25rem+1px)] top-0 flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs">
               🍽
             </div>
             <div className="text-sm font-semibold">
