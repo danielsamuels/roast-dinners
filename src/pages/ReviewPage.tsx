@@ -53,7 +53,7 @@ import {
 
 export default function ReviewPage() {
   const navigate = useNavigate();
-  const { state } = useMealConfig();
+  const { state, setServingTime } = useMealConfig();
   const session = useCookingSession();
   const [checkedEquipment, setCheckedEquipment] = useState<Set<string>>(
     new Set(),
@@ -110,9 +110,15 @@ export default function ReviewPage() {
   };
 
   const handleStartNow = () => {
-    if (!config) return;
-    // Regenerate schedule anchored to now + totalDuration as new serving time
-    const nowSchedule = generateSchedule(config, new Date());
+    if (!config || !schedule) return;
+    // Compute new serving time: now + total cooking duration
+    const newServing = new Date(Date.now() + schedule.totalDuration * 60_000);
+    const hh = String(newServing.getHours()).padStart(2, "0");
+    const mm = String(newServing.getMinutes()).padStart(2, "0");
+    const adjustedConfig = { ...config, servingTime: `${hh}:${mm}` };
+    const nowSchedule = generateSchedule(adjustedConfig, new Date());
+    // Update config so CookPage display matches
+    setServingTime(`${hh}:${mm}`);
     session.startSession(nowSchedule);
     navigate("/cook");
   };

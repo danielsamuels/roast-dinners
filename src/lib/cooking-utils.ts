@@ -36,7 +36,11 @@ export function buildDishColorMap(steps: ScheduledStep[]): Map<string, DishColor
 // ─── Formatting ─────────────────────────────────────────────────────
 
 export function formatTime(date: Date): string {
-  return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false });
+  // Round to nearest 5 minutes for cleaner display
+  const ms = date.getTime();
+  const fiveMin = 5 * 60 * 1000;
+  const rounded = new Date(Math.round(ms / fiveMin) * fiveMin);
+  return rounded.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false });
 }
 
 export function formatDuration(minutes: number): string {

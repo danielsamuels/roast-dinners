@@ -417,14 +417,35 @@ export default function CookPage() {
   );
 
   // Current group = first group with at least one uncompleted step
-  const currentGroupIndex = useMemo(() => {
+  const nextPendingGroupIndex = useMemo(() => {
     return groups.findIndex((g) =>
       g.steps.some((s) => !session.completedStepIds.includes(s.stepId)),
     );
   }, [groups, session.completedStepIds]);
 
-  const currentGroup =
-    currentGroupIndex >= 0 ? groups[currentGroupIndex] : undefined;
+  const nextPendingGroup =
+    nextPendingGroupIndex >= 0 ? groups[nextPendingGroupIndex] : undefined;
+
+  // Use a clock tick so we can re-evaluate "is this group due yet?" every second
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    const interval = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Is the next pending group due? (its adjusted start time is ≤ now)
+  const isGroupDue = useMemo(() => {
+    if (!nextPendingGroup) return false;
+    const adjustedStart = addMinutesToDate(nextPendingGroup.time, session.lateOffsetMinutes);
+    return now >= adjustedStart.getTime();
+  }, [nextPendingGroup, session.lateOffsetMinutes, now]);
+
+  // currentGroup = the group to show steps for (only if it's due or past due)
+  const currentGroupIndex = isGroupDue ? nextPendingGroupIndex : -1;
+  const currentGroup = isGroupDue ? nextPendingGroup : undefined;
+
+  // isWaiting = there's a pending group but it's not due yet
+  const isWaiting = !!nextPendingGroup && !isGroupDue;
 
   const completedGroupCount = useMemo(
     () =>
@@ -449,35 +470,11 @@ export default function CookPage() {
   }, [effectiveSteps, session.completedStepIds]);
 
   // ── Timer Logic ──
-  // Determine if user should wait: current group fully done but next group not due yet
-  const currentGroupAllDone = useMemo(() => {
-    if (!currentGroup) return false;
-    return currentGroup.steps.every((s) => session.completedStepIds.includes(s.stepId));
-  }, [currentGroup, session.completedStepIds]);
-
-  // Next group = the group after the current one (the one with pending steps)
-  const nextPendingGroupIndex = useMemo(() => {
-    if (currentGroupIndex < 0) return -1;
-    // If the current group still has pending steps, the "next" is the one after
-    if (!currentGroupAllDone) {
-      return currentGroupIndex + 1 < groups.length ? currentGroupIndex + 1 : -1;
-    }
-    // If current group is done, look for next group with any uncompleted steps
-    for (let i = currentGroupIndex + 1; i < groups.length; i++) {
-      if (groups[i].steps.some((s) => !session.completedStepIds.includes(s.stepId))) {
-        return i;
-      }
-    }
-    return -1;
-  }, [currentGroupIndex, currentGroupAllDone, groups, session.completedStepIds]);
-
-  const nextGroup = nextPendingGroupIndex >= 0 ? groups[nextPendingGroupIndex] : undefined;
-
-  // Count down seconds until the next group's scheduled start time
+  // Count down seconds until the next pending group's scheduled start time
   useEffect(() => {
-    if (!nextGroup) return;
+    if (!nextPendingGroup || isGroupDue) return;
 
-    const targetTime = addMinutesToDate(nextGroup.time, session.lateOffsetMinutes);
+    const targetTime = addMinutesToDate(nextPendingGroup.time, session.lateOffsetMinutes);
     let beepDone = false;
 
     const tick = () => {
@@ -487,9 +484,9 @@ export default function CookPage() {
       if (remaining === 0 && !beepDone) {
         beepDone = true;
         playBeep();
-        const nextSummary = nextGroup.steps.length === 1
-          ? nextGroup.steps[0].summary
-          : `${nextGroup.steps.length} steps`;
+        const nextSummary = nextPendingGroup.steps.length === 1
+          ? nextPendingGroup.steps[0].summary
+          : `${nextPendingGroup.steps.length} steps`;
         sendNotification("⏲️ Time for next step!", nextSummary);
         setTimerBanner(`Time to start: ${nextSummary}`);
       }
@@ -503,10 +500,7 @@ export default function CookPage() {
       clearInterval(interval);
       setTimerSeconds(null);
     };
-  }, [nextGroup, session.lateOffsetMinutes]);
-
-  // Whether the user should be waiting (current group done, next group not due)
-  const isWaiting = currentGroupAllDone && nextGroup && (timerSeconds ?? 0) > 0;
+  }, [nextPendingGroup, isGroupDue, session.lateOffsetMinutes]);
 
   // Global countdown to serving time
   useEffect(() => {
@@ -518,7 +512,7 @@ export default function CookPage() {
     ).getTime();
 
     const tick = () => {
-      const remaining = Math.max(0, Math.floor((servingMs - Date.now()) / 1000));
+      const remaining = Math.floor((servingMs - Date.now()) / 1000);
       setServingCountdown(remaining);
     };
 
@@ -653,15 +647,21 @@ export default function CookPage() {
       {session.schedule && servingCountdown !== null && (
         <div className={cn(
           "mt-4 flex items-center justify-between rounded-xl border-2 px-4 py-3",
-          servingCountdown <= 0
+          servingCountdown <= 0 && !nextPendingGroup
             ? "border-green-400 bg-green-50/50 dark:border-green-600 dark:bg-green-950/20"
-            : "border-primary/20 bg-primary/[0.03]",
+            : servingCountdown < 0
+              ? "border-amber-400 bg-amber-50/50 dark:border-amber-600 dark:bg-amber-950/20"
+              : "border-primary/20 bg-primary/[0.03]",
         )}>
           <div className="flex items-center gap-2">
             <span className="text-lg">🍽️</span>
             <div>
               <div className="text-sm font-medium">
-                {servingCountdown <= 0 ? "Ready to serve!" : "Serving at"}
+                {servingCountdown <= 0 && !nextPendingGroup
+                  ? "Ready to serve!"
+                  : servingCountdown < 0
+                    ? "Behind schedule"
+                    : "Serving at"}
               </div>
               <div className="text-xs text-muted-foreground">
                 {formatTime(addMinutesToDate(session.schedule.servingTime, session.lateOffsetMinutes))}
@@ -671,6 +671,11 @@ export default function CookPage() {
           {servingCountdown > 0 && (
             <span className="text-2xl font-bold tabular-nums">
               {formatCountdown(servingCountdown)}
+            </span>
+          )}
+          {servingCountdown < 0 && nextPendingGroup && (
+            <span className="text-lg font-bold tabular-nums text-amber-600 dark:text-amber-400">
+              +{formatCountdown(Math.abs(servingCountdown))}
             </span>
           )}
         </div>
@@ -685,11 +690,11 @@ export default function CookPage() {
       </div>
 
       {/* Top-level timer — countdown to next step group */}
-      {timerSeconds !== null && timerSeconds > 0 && nextGroup && (
+      {timerSeconds !== null && timerSeconds > 0 && nextPendingGroup && (
         <div className="mt-3 flex items-center justify-between rounded-lg border bg-muted/30 px-4 py-3">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Timer className="size-4" aria-hidden="true" />
-            <span>Next step at {formatTime(addMinutesToDate(nextGroup.time, session.lateOffsetMinutes))}</span>
+            <span>Next step at {formatTime(addMinutesToDate(nextPendingGroup.time, session.lateOffsetMinutes))}</span>
           </div>
           <span
             aria-live="polite"
@@ -742,7 +747,7 @@ export default function CookPage() {
                 <p className="text-sm text-muted-foreground">
                   Next step group starts at{" "}
                   <span className="font-medium text-foreground">
-                    {formatTime(addMinutesToDate(nextGroup!.time, session.lateOffsetMinutes))}
+                    {formatTime(addMinutesToDate(nextPendingGroup!.time, session.lateOffsetMinutes))}
                   </span>
                 </p>
                 {timerSeconds !== null && timerSeconds > 0 && (
@@ -787,7 +792,7 @@ export default function CookPage() {
               <p className="text-sm text-muted-foreground">
                 Next step group starts at{" "}
                 <span className="font-medium text-foreground">
-                  {formatTime(addMinutesToDate(nextGroup!.time, session.lateOffsetMinutes))}
+                  {formatTime(addMinutesToDate(nextPendingGroup!.time, session.lateOffsetMinutes))}
                 </span>
               </p>
               {timerSeconds !== null && timerSeconds > 0 && (

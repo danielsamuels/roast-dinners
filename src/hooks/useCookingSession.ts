@@ -110,14 +110,17 @@ export function useCookingSession(): CookingSession {
   }, [state]);
 
   const startSession = useCallback((schedule: ScheduleResult) => {
-    setState({
+    const newState = {
       isActive: true,
       startedAt: new Date(),
       schedule,
-      completedStepIds: [],
-      skippedDishIds: [],
+      completedStepIds: [] as string[],
+      skippedDishIds: [] as string[],
       lateOffsetMinutes: 0,
-    });
+    };
+    // Save synchronously so the session is available immediately after navigation
+    saveSession(newState);
+    setState(newState);
   }, []);
 
   const completeStep = useCallback((stepId: string) => {
