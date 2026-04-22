@@ -15,7 +15,7 @@ import { useCookingSession } from "@/hooks/useCookingSession";
 import { StepIndicator } from "@/components/StepIndicator";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   Collapsible,
   CollapsibleTrigger,
@@ -33,7 +33,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
-import { generateSchedule, type ScheduledStep } from "@/lib/scheduler";
+import { generateSchedule } from "@/lib/scheduler";
 import { buildMealConfig } from "@/lib/config";
 import { displayTemp } from "@/lib/temperature";
 import {
@@ -46,7 +46,9 @@ import {
   playBeep,
   requestNotificationPermission,
   sendNotification,
+  groupStepsByTime,
   type DishColor,
+  type TimelineGroup,
 } from "@/lib/cooking-utils";
 
 // ─── Timer Banner Component ─────────────────────────────────────────
@@ -77,38 +79,44 @@ function TimerBanner({
   );
 }
 
-// ─── Timeline Step Item ─────────────────────────────────────────────
+// ─── Timeline Group Item ─────────────────────────────────────────────
 
-function TimelineItem({
-  step,
-  isCompleted,
-  isCurrent,
-  color,
+function TimelineGroupItem({
+  group,
+  isCurrentGroup,
+  completedStepIds,
+  dishColorMap,
   lateOffset,
   onComplete,
-  itemRef,
+  groupRef,
 }: {
-  step: ScheduledStep;
-  isCompleted: boolean;
-  isCurrent: boolean;
-  color: DishColor | undefined;
+  group: TimelineGroup;
+  isCurrentGroup: boolean;
+  completedStepIds: string[];
+  dishColorMap: Map<string, DishColor>;
   lateOffset: number;
   onComplete: (stepId: string) => void;
-  itemRef?: React.RefObject<HTMLDivElement | null>;
+  groupRef?: React.RefObject<HTMLDivElement | null>;
 }) {
-  const adjustedStart = addMinutesToDate(step.startTime, lateOffset);
+  const allDone = group.steps.every((s) =>
+    completedStepIds.includes(s.stepId),
+  );
+  const adjustedTime = addMinutesToDate(group.time, lateOffset);
 
   return (
-    <div ref={itemRef} className="relative flex gap-3 pb-4">
+    <div ref={groupRef} className="relative flex gap-3 pb-4">
       {/* Dot and line */}
       <div className="flex flex-col items-center">
         <div
           className={cn(
             "mt-1 size-3 shrink-0 rounded-full border-2 transition-all",
-            isCompleted && "border-primary bg-primary",
-            isCurrent &&
+            allDone && "border-primary bg-primary",
+            isCurrentGroup &&
+              !allDone &&
               "border-primary bg-primary animate-pulse ring-4 ring-primary/20",
-            !isCompleted && !isCurrent && "border-muted-foreground/40 bg-background",
+            !allDone &&
+              !isCurrentGroup &&
+              "border-muted-foreground/40 bg-background",
           )}
         />
         <div className="flex-1 w-px bg-border" />
@@ -118,123 +126,213 @@ function TimelineItem({
       <div
         className={cn(
           "flex-1 min-w-0 -mt-0.5 transition-opacity",
-          isCompleted && "opacity-50",
+          allDone && "opacity-50",
         )}
       >
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-muted-foreground tabular-nums">
-            {formatTime(adjustedStart)}
-          </span>
-          <span
-            className={cn(
-              "size-2 rounded-full shrink-0",
-              color?.dot ?? "bg-muted-foreground",
-            )}
-          />
+        <span className="text-xs text-muted-foreground tabular-nums">
+          {formatTime(adjustedTime)}
+        </span>
+        <div className="space-y-1.5 mt-1">
+          {group.steps.map((step) => {
+            const isCompleted = completedStepIds.includes(step.stepId);
+            const color = dishColorMap.get(step.dishId);
+            return (
+              <div key={step.stepId}>
+                <div className="flex items-center gap-2">
+                  <span
+                    className={cn(
+                      "size-2 rounded-full shrink-0",
+                      color?.dot ?? "bg-muted-foreground",
+                    )}
+                  />
+                  <p
+                    className={cn(
+                      "text-sm",
+                      isCompleted && "line-through",
+                      isCurrentGroup && !isCompleted && "font-semibold",
+                    )}
+                  >
+                    {step.summary}
+                  </p>
+                </div>
+                <div className="flex items-center gap-1.5 ml-4">
+                  <span className={cn("text-xs", color?.text)}>
+                    {step.dishName}
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    · {formatDuration(step.durationMinutes)}
+                  </span>
+                </div>
+                {isCompleted && (
+                  <span className="text-xs text-muted-foreground ml-4 flex items-center gap-1">
+                    <Check className="size-3" /> Completed
+                  </span>
+                )}
+                {!isCompleted && !isCurrentGroup && (
+                  <Button
+                    variant="ghost"
+                    size="xs"
+                    className="ml-4 mt-0.5"
+                    onClick={() => onComplete(step.stepId)}
+                  >
+                    <Check className="size-3" data-icon="inline-start" />
+                    Done
+                  </Button>
+                )}
+              </div>
+            );
+          })}
         </div>
-        <p
-          className={cn(
-            "text-sm mt-0.5",
-            isCompleted && "line-through",
-            isCurrent && "font-semibold",
-          )}
-        >
-          {step.summary}
-        </p>
-        <div className="flex items-center gap-1.5 mt-0.5">
-          <span className={cn("text-xs", color?.text)}>{step.dishName}</span>
-          <span className="text-xs text-muted-foreground">
-            · {formatDuration(step.durationMinutes)}
-          </span>
-        </div>
-
-        {/* Inline done button for non-current steps */}
-        {!isCompleted && !isCurrent && (
-          <Button
-            variant="ghost"
-            size="xs"
-            className="mt-1"
-            onClick={() => onComplete(step.stepId)}
-          >
-            <Check className="size-3" data-icon="inline-start" />
-            Done
-          </Button>
-        )}
-        {isCompleted && (
-          <span className="text-xs text-muted-foreground mt-0.5 flex items-center gap-1">
-            <Check className="size-3" /> Completed
-          </span>
-        )}
       </div>
     </div>
   );
 }
 
-// ─── Current Step Card ──────────────────────────────────────────────
+// ─── Current Step Group Card ────────────────────────────────────────
 
-function CurrentStepCard({
-  step,
-  color,
+function CurrentStepGroup({
+  group,
+  groupIndex,
+  totalGroups,
+  completedStepIds,
+  dishColorMap,
   timerSeconds,
   ovenTempDisplay,
   lateOffset,
-  onComplete,
+  onCompleteStep,
 }: {
-  step: ScheduledStep;
-  color: DishColor | undefined;
+  group: TimelineGroup;
+  groupIndex: number;
+  totalGroups: number;
+  completedStepIds: string[];
+  dishColorMap: Map<string, DishColor>;
   timerSeconds: number | null;
   ovenTempDisplay: string;
   lateOffset: number;
-  onComplete: () => void;
+  onCompleteStep: (stepId: string) => void;
 }) {
-  const adjustedStart = addMinutesToDate(step.startTime, lateOffset);
-  const adjustedEnd = addMinutesToDate(step.endTime, lateOffset);
-  const totalSec = step.durationMinutes * 60;
+  const { steps } = group;
+  const completedInGroup = steps.filter((s) =>
+    completedStepIds.includes(s.stepId),
+  ).length;
+
+  // Time range: earliest start to latest end (adjusted for late offset)
+  const earliestStart = addMinutesToDate(group.time, lateOffset);
+  const latestEnd = addMinutesToDate(
+    steps.reduce(
+      (latest, s) => (s.endTime > latest ? s.endTime : latest),
+      steps[0].endTime,
+    ),
+    lateOffset,
+  );
+
+  const longestDuration = Math.max(...steps.map((s) => s.durationMinutes));
+  const totalSec = longestDuration * 60;
   const progress =
     timerSeconds !== null && totalSec > 0
       ? Math.max(0, ((totalSec - timerSeconds) / totalSec) * 100)
       : 0;
   const timerExpired = timerSeconds !== null && timerSeconds <= 0;
 
+  const primaryColor = dishColorMap.get(steps[0].dishId);
+
   return (
     <Card
       className={cn(
         "border-2 transition-colors",
-        color?.border,
+        primaryColor?.border,
         timerExpired && "border-orange-400 dark:border-orange-600",
       )}
     >
       <CardHeader>
-        <div className="flex items-center gap-2 flex-wrap">
-          <Badge className={cn(color?.bg, color?.text, "border", color?.border)}>
-            {step.dishName}
-          </Badge>
-          <span className="text-lg leading-none">
-            {resourceIcon(step.resource)}
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-muted-foreground">
+            Step group {groupIndex + 1} of {totalGroups}
           </span>
-          {step.ovenTempCelsius !== null && (
-            <Badge variant="secondary" className="gap-1">
-              <Flame className="size-3" />
-              {displayTemp(
-                step.ovenTempCelsius,
-                ovenTempDisplay as "celsius-fan" | "celsius-conventional" | "gas-mark",
-              )}
-            </Badge>
+          {steps.length > 1 && (
+            <span className="text-xs text-muted-foreground">
+              {completedInGroup}/{steps.length} done
+            </span>
           )}
         </div>
-        <CardTitle className="text-xl mt-2">{step.summary}</CardTitle>
+        <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
+          <Clock className="size-3.5" />
+          {formatTime(earliestStart)} – {formatTime(latestEnd)}
+        </div>
       </CardHeader>
       <CardContent className="space-y-4">
-        <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
-          {step.instruction}
-        </p>
-
-        {/* Time range */}
-        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-          <Clock className="size-3.5" />
-          {formatTime(adjustedStart)} – {formatTime(adjustedEnd)}
-          <span className="text-muted-foreground/60">·</span>
-          {formatDuration(step.durationMinutes)}
+        {/* Steps list */}
+        <div className="space-y-3">
+          {steps.map((step) => {
+            const isCompleted = completedStepIds.includes(step.stepId);
+            const color = dishColorMap.get(step.dishId);
+            return (
+              <div
+                key={step.stepId}
+                className={cn(
+                  "rounded-lg border p-3 transition-opacity",
+                  isCompleted && "opacity-50",
+                  color?.border,
+                )}
+              >
+                <div className="flex items-center gap-2 flex-wrap">
+                  <Badge
+                    className={cn(
+                      color?.bg,
+                      color?.text,
+                      "border",
+                      color?.border,
+                    )}
+                  >
+                    {step.dishName}
+                  </Badge>
+                  <span className="text-lg leading-none">
+                    {resourceIcon(step.resource)}
+                  </span>
+                  {step.ovenTempCelsius !== null && (
+                    <Badge variant="secondary" className="gap-1">
+                      <Flame className="size-3" />
+                      {displayTemp(
+                        step.ovenTempCelsius,
+                        ovenTempDisplay as
+                          | "celsius-fan"
+                          | "celsius-conventional"
+                          | "gas-mark",
+                      )}
+                    </Badge>
+                  )}
+                </div>
+                <p
+                  className={cn(
+                    "text-base font-semibold mt-1",
+                    isCompleted && "line-through",
+                  )}
+                >
+                  {step.summary}
+                </p>
+                <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line mt-1">
+                  {step.instruction}
+                </p>
+                <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
+                  {formatDuration(step.durationMinutes)}
+                </div>
+                {isCompleted ? (
+                  <span className="text-xs text-muted-foreground mt-2 flex items-center gap-1">
+                    <Check className="size-3" /> Completed
+                  </span>
+                ) : (
+                  <Button
+                    size="sm"
+                    className="mt-2"
+                    onClick={() => onCompleteStep(step.stepId)}
+                  >
+                    <Check className="size-4" data-icon="inline-start" />
+                    Mark Step Done
+                  </Button>
+                )}
+              </div>
+            );
+          })}
         </div>
 
         {/* Timer */}
@@ -256,14 +354,12 @@ function CurrentStepCard({
                 {formatCountdown(Math.max(0, timerSeconds))}
               </span>
             </div>
-            <Progress value={progress} aria-label={`Step progress: ${Math.round(progress)}%`} />
+            <Progress
+              value={progress}
+              aria-label={`Step progress: ${Math.round(progress)}%`}
+            />
           </div>
         )}
-
-        <Button size="lg" className="w-full" onClick={onComplete}>
-          <Check className="size-4" data-icon="inline-start" />
-          Mark Step Done
-        </Button>
       </CardContent>
     </Card>
   );
@@ -350,19 +446,28 @@ export default function CookPage() {
     [session.schedule],
   );
 
-  // Current step = first non-completed step in order
-  const currentStep = useMemo(() => {
-    return effectiveSteps.find(
-      (s) => !session.completedStepIds.includes(s.stepId),
-    );
-  }, [effectiveSteps, session.completedStepIds]);
+  // Group effective steps by time proximity
+  const groups = useMemo(
+    () => groupStepsByTime(effectiveSteps),
+    [effectiveSteps],
+  );
 
-  const completedCount = useMemo(
+  // Current group = first group with at least one uncompleted step
+  const currentGroupIndex = useMemo(() => {
+    return groups.findIndex((g) =>
+      g.steps.some((s) => !session.completedStepIds.includes(s.stepId)),
+    );
+  }, [groups, session.completedStepIds]);
+
+  const currentGroup =
+    currentGroupIndex >= 0 ? groups[currentGroupIndex] : undefined;
+
+  const completedGroupCount = useMemo(
     () =>
-      effectiveSteps.filter((s) =>
-        session.completedStepIds.includes(s.stepId),
+      groups.filter((g) =>
+        g.steps.every((s) => session.completedStepIds.includes(s.stepId)),
       ).length,
-    [effectiveSteps, session.completedStepIds],
+    [groups, session.completedStepIds],
   );
 
   // Unique active dishes for skip dialog
@@ -380,16 +485,22 @@ export default function CookPage() {
   }, [effectiveSteps, session.completedStepIds]);
 
   // ── Timer Logic ──
-  // Single effect: subscribes to the clock for current step's countdown.
-  // All setState calls are inside async callbacks (setTimeout/setInterval), never synchronous.
-  const currentStepId = currentStep?.stepId ?? null;
-  const currentStepDuration = currentStep?.durationMinutes ?? 0;
-  const currentStepSummary = currentStep?.summary ?? "";
+  // Timer resets when the group changes, not when individual steps are completed.
+  const currentGroupKey = currentGroupIndex >= 0 ? currentGroupIndex : null;
+  const longestGroupDuration = useMemo(() => {
+    if (!currentGroup) return 0;
+    return Math.max(...currentGroup.steps.map((s) => s.durationMinutes));
+  }, [currentGroup]);
+  const currentGroupSummary = useMemo(() => {
+    if (!currentGroup) return "";
+    if (currentGroup.steps.length === 1) return currentGroup.steps[0].summary;
+    return `${currentGroup.steps.length} steps`;
+  }, [currentGroup]);
 
   useEffect(() => {
-    if (!currentStepId || currentStepDuration <= 0) return;
+    if (currentGroupKey === null || longestGroupDuration <= 0) return;
 
-    const totalSeconds = currentStepDuration * 60;
+    const totalSeconds = longestGroupDuration * 60;
     const startedAt = Date.now();
     let beepDone = false;
 
@@ -401,8 +512,8 @@ export default function CookPage() {
       if (remaining === 0 && !beepDone) {
         beepDone = true;
         playBeep();
-        sendNotification("⏰ Timer Done!", `${currentStepSummary} is ready`);
-        setTimerBanner(`${currentStepSummary} — timer complete!`);
+        sendNotification("⏰ Timer Done!", `${currentGroupSummary} is ready`);
+        setTimerBanner(`${currentGroupSummary} — timer complete!`);
       }
     };
 
@@ -414,15 +525,15 @@ export default function CookPage() {
       clearTimeout(firstTick);
       clearInterval(interval);
     };
-  }, [currentStepId, currentStepDuration, currentStepSummary]);
+  }, [currentGroupKey, longestGroupDuration, currentGroupSummary]);
 
-  // Auto-scroll timeline to current step
+  // Auto-scroll timeline to current group
   useEffect(() => {
     currentStepRef.current?.scrollIntoView({
       behavior: "smooth",
       block: "center",
     });
-  }, [currentStepId]);
+  }, [currentGroupIndex]);
 
   // Detect completion — all effective steps done
   useEffect(() => {
@@ -495,26 +606,25 @@ export default function CookPage() {
   }
 
   const overallProgress =
-    effectiveSteps.length > 0
-      ? (completedCount / effectiveSteps.length) * 100
+    groups.length > 0
+      ? (completedGroupCount / groups.length) * 100
       : 0;
 
   // ── Timeline Component (shared between desktop and mobile) ──
   const timeline = (
     <div className="space-y-0">
-      {effectiveSteps.map((step) => {
-        const isCompleted = session.completedStepIds.includes(step.stepId);
-        const isCurrent = currentStep?.stepId === step.stepId;
+      {groups.map((group, idx) => {
+        const isCurrentGroup = idx === currentGroupIndex;
         return (
-          <TimelineItem
-            key={step.stepId}
-            step={step}
-            isCompleted={isCompleted}
-            isCurrent={isCurrent}
-            color={dishColorMap.get(step.dishId)}
+          <TimelineGroupItem
+            key={`group-${idx}`}
+            group={group}
+            isCurrentGroup={isCurrentGroup}
+            completedStepIds={session.completedStepIds}
+            dishColorMap={dishColorMap}
             lateOffset={session.lateOffsetMinutes}
             onComplete={handleCompleteStep}
-            itemRef={isCurrent ? currentStepRef : undefined}
+            groupRef={isCurrentGroup ? currentStepRef : undefined}
           />
         );
       })}
@@ -537,9 +647,9 @@ export default function CookPage() {
 
       {/* Overall progress */}
       <div className="mt-4 flex items-center gap-3">
-        <Progress value={overallProgress} className="flex-1" aria-label={`Overall progress: ${completedCount} of ${effectiveSteps.length} steps complete`} />
+        <Progress value={overallProgress} className="flex-1" aria-label={`Overall progress: ${completedGroupCount} of ${groups.length} step groups complete`} />
         <span className="text-xs text-muted-foreground tabular-nums whitespace-nowrap">
-          {completedCount}/{effectiveSteps.length} steps
+          Step group {currentGroupIndex >= 0 ? currentGroupIndex + 1 : groups.length} of {groups.length}
         </span>
       </div>
 
@@ -574,16 +684,19 @@ export default function CookPage() {
           {timeline}
         </div>
 
-        {/* Right: Current step */}
+        {/* Right: Current step group */}
         <div>
-          {currentStep ? (
-            <CurrentStepCard
-              step={currentStep}
-              color={dishColorMap.get(currentStep.dishId)}
+          {currentGroup ? (
+            <CurrentStepGroup
+              group={currentGroup}
+              groupIndex={currentGroupIndex}
+              totalGroups={groups.length}
+              completedStepIds={session.completedStepIds}
+              dishColorMap={dishColorMap}
               timerSeconds={timerSeconds}
               ovenTempDisplay={state.ovenTempDisplay}
               lateOffset={session.lateOffsetMinutes}
-              onComplete={() => handleCompleteStep(currentStep.stepId)}
+              onCompleteStep={handleCompleteStep}
             />
           ) : (
             <Card>
@@ -600,15 +713,18 @@ export default function CookPage() {
 
       {/* ── Mobile: Single column ── */}
       <div className="mt-4 md:hidden space-y-4">
-        {/* Current step */}
-        {currentStep ? (
-          <CurrentStepCard
-            step={currentStep}
-            color={dishColorMap.get(currentStep.dishId)}
+        {/* Current step group */}
+        {currentGroup ? (
+          <CurrentStepGroup
+            group={currentGroup}
+            groupIndex={currentGroupIndex}
+            totalGroups={groups.length}
+            completedStepIds={session.completedStepIds}
+            dishColorMap={dishColorMap}
             timerSeconds={timerSeconds}
             ovenTempDisplay={state.ovenTempDisplay}
             lateOffset={session.lateOffsetMinutes}
-            onComplete={() => handleCompleteStep(currentStep.stepId)}
+            onCompleteStep={handleCompleteStep}
           />
         ) : (
           <Card>
@@ -631,7 +747,7 @@ export default function CookPage() {
             )}
             Timeline
             <Badge variant="secondary" className="ml-auto">
-              {completedCount}/{effectiveSteps.length}
+              {completedGroupCount}/{groups.length}
             </Badge>
           </CollapsibleTrigger>
           <CollapsibleContent>
