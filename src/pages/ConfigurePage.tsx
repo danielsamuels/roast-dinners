@@ -504,7 +504,7 @@ export default function ConfigurePage() {
                           <span className="font-medium">{side.name}</span>
                         </button>
 
-                        {isSelected && (
+                        {isSelected && (side.variants.length > 0 || (side.homemadeAvailable && side.preMadeOption)) && (
                           <div className="mt-3 ml-9 space-y-3">
                             {side.variants.length > 0 && (
                               <div>
