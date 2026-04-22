@@ -28,6 +28,14 @@ import {
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@/components/ui/collapsible";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { cn } from "@/lib/utils";
 import { generateSchedule } from "@/lib/scheduler";
@@ -51,6 +59,7 @@ export default function ReviewPage() {
     new Set(),
   );
   const [equipmentOpen, setEquipmentOpen] = useState(true);
+  const [timingWarningOpen, setTimingWarningOpen] = useState(false);
 
   const config = useMemo(() => buildMealConfig(state), [state]);
 
@@ -84,6 +93,31 @@ export default function ReviewPage() {
   };
 
   const handleStartCooking = () => {
+    if (!schedule || !config) return;
+
+    const now = Date.now();
+    const scheduledStart = schedule.startTime.getTime();
+    const tolerance = 15 * 60 * 1000; // 15 minutes
+
+    // If we're more than 15 minutes early or late vs scheduled start
+    if (Math.abs(now - scheduledStart) > tolerance) {
+      setTimingWarningOpen(true);
+      return;
+    }
+
+    session.startSession(schedule);
+    navigate("/cook");
+  };
+
+  const handleStartNow = () => {
+    if (!config) return;
+    // Regenerate schedule anchored to now + totalDuration as new serving time
+    const nowSchedule = generateSchedule(config, new Date());
+    session.startSession(nowSchedule);
+    navigate("/cook");
+  };
+
+  const handleStartAnyway = () => {
     if (!schedule) return;
     session.startSession(schedule);
     navigate("/cook");
@@ -337,6 +371,44 @@ export default function ReviewPage() {
           <ArrowRight className="size-4" aria-hidden="true" data-icon="inline-end" />
         </Button>
       </div>
+
+      {/* ── Timing Warning Dialog ── */}
+      <Dialog open={timingWarningOpen} onOpenChange={setTimingWarningOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <AlertTriangle className="size-5 text-amber-500" />
+              Outside cooking window
+            </DialogTitle>
+            <DialogDescription>
+              {schedule && (
+                <>
+                  Your schedule is set to start at{" "}
+                  <span className="font-medium text-foreground">{formatTime(schedule.startTime)}</span>
+                  {" "}for a{" "}
+                  <span className="font-medium text-foreground">{formatTime(schedule.servingTime)}</span>
+                  {" "}serving time. Starting now would mean your timings won&rsquo;t line up.
+                </>
+              )}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex-col gap-2 sm:flex-col">
+            <Button onClick={handleStartNow} className="w-full">
+              Start now (adjust serving time)
+            </Button>
+            <Button variant="outline" onClick={handleStartAnyway} className="w-full">
+              Start with original timing
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={() => setTimingWarningOpen(false)}
+              className="w-full"
+            >
+              Cancel
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </main>
   );
 }

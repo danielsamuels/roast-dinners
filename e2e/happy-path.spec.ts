@@ -79,8 +79,15 @@ test.describe("Happy path — full flow", () => {
     // Verify timeline has at least one step
     await expect(page.getByRole("heading", { name: /timeline/i })).toBeVisible();
 
-    // Start Cooking
+    // Start Cooking — may show timing warning dialog if outside cooking window
     await page.getByRole("button", { name: /start cooking/i }).click();
+
+    // If outside cooking window, the warning dialog appears — click "Start now"
+    const startNow = page.getByRole("button", { name: /start now/i });
+    if (await startNow.isVisible({ timeout: 1000 }).catch(() => false)) {
+      await startNow.click();
+    }
+
     await expect(page).toHaveURL(/\/cook/);
 
     // ── Cook page ──

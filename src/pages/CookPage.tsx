@@ -338,6 +338,7 @@ export default function CookPage() {
   // Timer state
   const [timerSeconds, setTimerSeconds] = useState<number | null>(null);
   const [timerBanner, setTimerBanner] = useState<string | null>(null);
+  const [servingCountdown, setServingCountdown] = useState<number | null>(null);
 
   // Mobile timeline toggle
   const [timelineOpen, setTimelineOpen] = useState(false);
@@ -507,6 +508,29 @@ export default function CookPage() {
   // Whether the user should be waiting (current group done, next group not due)
   const isWaiting = currentGroupAllDone && nextGroup && (timerSeconds ?? 0) > 0;
 
+  // Global countdown to serving time
+  useEffect(() => {
+    if (!session.schedule) return;
+
+    const servingMs = addMinutesToDate(
+      session.schedule.servingTime,
+      session.lateOffsetMinutes,
+    ).getTime();
+
+    const tick = () => {
+      const remaining = Math.max(0, Math.floor((servingMs - Date.now()) / 1000));
+      setServingCountdown(remaining);
+    };
+
+    const firstTick = setTimeout(tick, 0);
+    const interval = setInterval(tick, 1000);
+
+    return () => {
+      clearTimeout(firstTick);
+      clearInterval(interval);
+    };
+  }, [session.schedule, session.lateOffsetMinutes]);
+
   // Auto-scroll timeline to current group
   useEffect(() => {
     currentStepRef.current?.scrollIntoView({
@@ -624,6 +648,33 @@ export default function CookPage() {
       <StepIndicator currentPath="/cook" />
 
       <h1 className="sr-only">Cooking Session</h1>
+
+      {/* Global countdown to serving time */}
+      {session.schedule && servingCountdown !== null && (
+        <div className={cn(
+          "mt-4 flex items-center justify-between rounded-xl border-2 px-4 py-3",
+          servingCountdown <= 0
+            ? "border-green-400 bg-green-50/50 dark:border-green-600 dark:bg-green-950/20"
+            : "border-primary/20 bg-primary/[0.03]",
+        )}>
+          <div className="flex items-center gap-2">
+            <span className="text-lg">🍽️</span>
+            <div>
+              <div className="text-sm font-medium">
+                {servingCountdown <= 0 ? "Ready to serve!" : "Serving at"}
+              </div>
+              <div className="text-xs text-muted-foreground">
+                {formatTime(addMinutesToDate(session.schedule.servingTime, session.lateOffsetMinutes))}
+              </div>
+            </div>
+          </div>
+          {servingCountdown > 0 && (
+            <span className="text-2xl font-bold tabular-nums">
+              {formatCountdown(servingCountdown)}
+            </span>
+          )}
+        </div>
+      )}
 
       {/* Overall progress */}
       <div className="mt-4 flex items-center gap-3">
