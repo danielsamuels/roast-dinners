@@ -16,6 +16,7 @@ export interface ShoppingItem {
   category: ShoppingCategory;
   fromDishes: string[];
   isChecked: boolean;
+  quantityPrefix?: string;
 }
 
 export interface BuyOnlyItem {
@@ -55,18 +56,19 @@ export const CATEGORY_ORDER: ShoppingCategory[] = [
 
 // ─── Format Helpers ─────────────────────────────────────────────────
 
-export function formatQuantity(quantity: number, unit: string): string {
+export function formatQuantity(quantity: number, unit: string, prefix?: string): string {
+  const p = prefix ?? "";
   // Physical countable items — round to whole numbers
   const countableUnits = new Set(["whole", "cloves", "leaves", "jar"]);
   if (countableUnits.has(unit)) {
     const rounded = Math.ceil(quantity);
-    return unit === "whole" ? rounded.toString() : `${rounded} ${unit}`;
+    return unit === "whole" ? `${p}${rounded}` : `${p}${rounded} ${unit}`;
   }
 
   // Round to a sensible display value
   const rounded = Math.round(quantity * 10) / 10;
   const display = rounded % 1 === 0 ? rounded.toString() : rounded.toFixed(1);
-  return `${display} ${unit}`;
+  return `${p}${display} ${unit}`;
 }
 
 // ─── Generator ──────────────────────────────────────────────────────
@@ -174,16 +176,16 @@ export function generateShoppingList(
       const hasActualWeight = config.actualWeightKg !== null;
       const suggestedWeight = +(meatCut.weightPerPersonKg * config.servings).toFixed(2);
       const displayWeight = config.actualWeightKg ?? suggestedWeight;
-      const quantityPrefix = hasActualWeight ? "" : "~";
       const note = hasActualWeight ? "" : " (adjust on cooking day)";
       items.unshift({
         ingredientId: meatRef.ingredientId,
         name: meatIngredient.name + note,
         quantity: displayWeight,
-        unit: quantityPrefix + "kg",
+        unit: "kg",
         category: "meat-and-fish",
         fromDishes: [meatCut.name],
         isChecked: checkedSet.has(meatRef.ingredientId),
+        quantityPrefix: hasActualWeight ? undefined : "~",
       });
     }
   }
@@ -219,7 +221,7 @@ export function formatShoppingListText(list: ShoppingList): string {
 
     lines.push(`📦 ${CATEGORY_DISPLAY_NAMES[category]}`);
     for (const item of categoryItems) {
-      lines.push(`  • ${item.name} — ${formatQuantity(item.quantity, item.unit)}`);
+      lines.push(`  • ${item.name} — ${formatQuantity(item.quantity, item.unit, item.quantityPrefix)}`);
     }
     lines.push("");
   }

@@ -84,7 +84,7 @@ function ShoppingCategorySection({
                     {item.name}
                   </span>
                   <span className="text-sm text-muted-foreground whitespace-nowrap">
-                    {formatQuantity(item.quantity, item.unit)}
+                    {formatQuantity(item.quantity, item.unit, item.quantityPrefix)}
                   </span>
                 </div>
                 {item.fromDishes.length > 0 && (
