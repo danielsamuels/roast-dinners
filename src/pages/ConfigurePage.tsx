@@ -87,17 +87,60 @@ export default function ConfigurePage() {
     ? getCondimentsForMeat(selectedMeatType)
     : [];
 
-  // Group sides by category
-  const sidesByCategory = useMemo(() => {
-    const map = new Map<SideCategory, typeof allSides>();
+  // Map of vegetable base name → group label for multi-variant sides
+  const SIDE_GROUP_LABELS: Record<string, string> = {
+    carrots: "Carrots",
+    "brussels-sprouts": "Brussels Sprouts",
+  };
+
+  // Determine the group key for a side (e.g., "carrots-steamed" → "carrots")
+  function getSideGroupKey(sideId: string): string {
+    for (const prefix of Object.keys(SIDE_GROUP_LABELS)) {
+      if (sideId.startsWith(prefix + "-")) return prefix;
+    }
+    return sideId; // ungrouped sides are their own group
+  }
+
+  interface SideGroup {
+    groupKey: string;
+    label: string;
+    sides: typeof allSides;
+    isMulti: boolean;
+  }
+
+  // Group sides by category, then by vegetable group within each category
+  const groupedSidesByCategory = useMemo(() => {
+    const result = new Map<SideCategory, SideGroup[]>();
     for (const cat of SIDE_CATEGORY_ORDER) {
-      map.set(cat, []);
+      result.set(cat, []);
+    }
+    // First, group all sides by their group key within each category
+    const catGroupMap = new Map<SideCategory, Map<string, typeof allSides>>();
+    for (const cat of SIDE_CATEGORY_ORDER) {
+      catGroupMap.set(cat, new Map());
     }
     for (const side of allSides) {
-      const list = map.get(side.category)!;
+      const groupKey = getSideGroupKey(side.id);
+      const catMap = catGroupMap.get(side.category)!;
+      const list = catMap.get(groupKey) ?? [];
       list.push(side);
+      catMap.set(groupKey, list);
     }
-    return map;
+    // Convert to SideGroup arrays
+    for (const cat of SIDE_CATEGORY_ORDER) {
+      const catMap = catGroupMap.get(cat)!;
+      const groups: SideGroup[] = [];
+      for (const [groupKey, sides] of catMap) {
+        groups.push({
+          groupKey,
+          label: SIDE_GROUP_LABELS[groupKey] ?? sides[0].name,
+          sides,
+          isMulti: sides.length > 1,
+        });
+      }
+      result.set(cat, groups);
+    }
+    return result;
   }, [allSides]);
 
   const canProceed = !!state.meatCutId && state.servings > 0;
@@ -298,8 +341,8 @@ export default function ConfigurePage() {
         </CardHeader>
         <CardContent>
           {SIDE_CATEGORY_ORDER.map((cat, catIdx) => {
-            const catSides = sidesByCategory.get(cat) ?? [];
-            if (catSides.length === 0) return null;
+            const catGroups = groupedSidesByCategory.get(cat) ?? [];
+            if (catGroups.length === 0) return null;
             return (
               <div key={cat}>
                 {catIdx > 0 && <Separator className="my-4" />}
@@ -307,7 +350,131 @@ export default function ConfigurePage() {
                   {SIDE_CATEGORY_LABELS[cat]}
                 </h3>
                 <div className="space-y-2">
-                  {catSides.map((side) => {
+                  {catGroups.map((group) => {
+                    if (group.isMulti) {
+                      // Multi-variant group (e.g., Carrots → Steamed / Honey Roasted)
+                      const selectedSide = group.sides.find((s) =>
+                        state.sides.some((sel) => sel.sideId === s.id),
+                      );
+                      const isGroupSelected = !!selectedSide;
+                      const selection = selectedSide
+                        ? state.sides.find((s) => s.sideId === selectedSide.id)
+                        : null;
+
+                      // Extract the cooking style from the side name (e.g., "Honey Roasted Carrots" → "Honey Roasted")
+                      const styleLabel = (side: typeof group.sides[0]) => {
+                        const label = side.name
+                          .replace(group.label, "")
+                          .replace(/^\s+|\s+$/g, "");
+                        return label || side.name;
+                      };
+
+                      return (
+                        <div
+                          key={group.groupKey}
+                          className={cn(
+                            "rounded-lg border p-3 transition-colors",
+                            isGroupSelected && "border-primary/30 bg-primary/[0.02]",
+                          )}
+                        >
+                          <button
+                            onClick={() => {
+                              if (isGroupSelected && selectedSide) {
+                                toggleSide(selectedSide.id);
+                              } else {
+                                toggleSide(group.sides[0].id);
+                              }
+                            }}
+                            className="flex w-full items-center gap-3 text-left"
+                          >
+                            <div
+                              className={cn(
+                                "flex h-6 w-6 shrink-0 items-center justify-center rounded-md border-2 transition-colors",
+                                isGroupSelected
+                                  ? "border-primary bg-primary text-primary-foreground"
+                                  : "border-border",
+                              )}
+                            >
+                              {isGroupSelected && <Check className="size-4" />}
+                            </div>
+                            <span className="font-medium">{group.label}</span>
+                          </button>
+
+                          {isGroupSelected && (
+                            <div className="mt-3 ml-9 space-y-3">
+                              <div>
+                                <Label className="text-xs text-muted-foreground">
+                                  Style
+                                </Label>
+                                <div className="mt-1 flex flex-wrap gap-2">
+                                  {group.sides.map((side) => (
+                                    <button
+                                      key={side.id}
+                                      onClick={() => {
+                                        // Deselect old, select new
+                                        if (selectedSide && selectedSide.id !== side.id) {
+                                          toggleSide(selectedSide.id);
+                                        }
+                                        if (!state.sides.some((s) => s.sideId === side.id)) {
+                                          toggleSide(side.id);
+                                        }
+                                      }}
+                                      className={cn(
+                                        "rounded-md border px-3 py-1.5 text-xs transition-colors",
+                                        selectedSide?.id === side.id
+                                          ? "border-primary bg-primary/10 text-primary"
+                                          : "border-border hover:bg-muted",
+                                      )}
+                                    >
+                                      {styleLabel(side)}
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+                              {/* Homemade / Pre-made toggle for the selected variant */}
+                              {selectedSide?.homemadeAvailable && selectedSide?.preMadeOption && (
+                                <div>
+                                  <Label className="text-xs text-muted-foreground">
+                                    Preparation
+                                  </Label>
+                                  <div className="mt-1 flex gap-2">
+                                    <button
+                                      onClick={() =>
+                                        updateSide(selectedSide.id, { mode: "homemade" })
+                                      }
+                                      className={cn(
+                                        "rounded-md border px-3 py-1.5 text-xs transition-colors",
+                                        selection?.mode === "homemade"
+                                          ? "border-primary bg-primary/10 text-primary"
+                                          : "border-border hover:bg-muted",
+                                      )}
+                                    >
+                                      🍳 Homemade
+                                    </button>
+                                    <button
+                                      onClick={() =>
+                                        updateSide(selectedSide.id, { mode: "premade" })
+                                      }
+                                      className={cn(
+                                        "rounded-md border px-3 py-1.5 text-xs transition-colors",
+                                        selection?.mode === "premade"
+                                          ? "border-primary bg-primary/10 text-primary"
+                                          : "border-border hover:bg-muted",
+                                      )}
+                                    >
+                                      🛒 Pre-made
+                                    </button>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    }
+
+                    // Single-item group — original behavior
+                    const side = group.sides[0];
                     const selection = state.sides.find(
                       (s) => s.sideId === side.id,
                     );
@@ -320,7 +487,6 @@ export default function ConfigurePage() {
                           isSelected && "border-primary/30 bg-primary/[0.02]",
                         )}
                       >
-                        {/* Toggle row */}
                         <button
                           onClick={() => toggleSide(side.id)}
                           className="flex w-full items-center gap-3 text-left"
@@ -338,10 +504,8 @@ export default function ConfigurePage() {
                           <span className="font-medium">{side.name}</span>
                         </button>
 
-                        {/* Sub-options when toggled on */}
                         {isSelected && (
                           <div className="mt-3 ml-9 space-y-3">
-                            {/* Variant selector */}
                             {side.variants.length > 0 && (
                               <div>
                                 <Label className="text-xs text-muted-foreground">
@@ -370,7 +534,6 @@ export default function ConfigurePage() {
                               </div>
                             )}
 
-                            {/* Homemade / Pre-made toggle */}
                             {side.homemadeAvailable && side.preMadeOption && (
                               <div>
                                 <Label className="text-xs text-muted-foreground">

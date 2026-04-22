@@ -56,15 +56,17 @@ export const CATEGORY_ORDER: ShoppingCategory[] = [
 // ─── Format Helpers ─────────────────────────────────────────────────
 
 export function formatQuantity(quantity: number, unit: string): string {
+  // Physical countable items — round to whole numbers
+  const countableUnits = new Set(["whole", "cloves", "leaves", "jar"]);
+  if (countableUnits.has(unit)) {
+    const rounded = Math.ceil(quantity);
+    return unit === "whole" ? rounded.toString() : `${rounded} ${unit}`;
+  }
+
   // Round to a sensible display value
   const rounded = Math.round(quantity * 10) / 10;
   const display = rounded % 1 === 0 ? rounded.toString() : rounded.toFixed(1);
-
-  if (unit === "whole") return display;
-  // Units that are abbreviations (g, ml, kg, tsp, tbsp) — no space
-  const noSpaceUnits = new Set(["g", "ml", "kg", "tsp", "tbsp"]);
-  const separator = noSpaceUnits.has(unit) ? "" : " ";
-  return `${display}${separator}${unit}`;
+  return `${display} ${unit}`;
 }
 
 // ─── Generator ──────────────────────────────────────────────────────
