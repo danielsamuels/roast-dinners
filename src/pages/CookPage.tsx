@@ -473,14 +473,14 @@ export default function CookPage() {
         <main id="main-content" className="container mx-auto max-w-2xl px-4 py-8 text-center">
           <StepIndicator currentPath="/cook" />
           <p className="mt-8 text-muted-foreground">
-            Please configure your meal first.
+            Please complete the Cooking Day setup first.
           </p>
           <Button
             variant="outline"
             className="mt-4"
-            onClick={() => navigate("/configure")}
+            onClick={() => navigate("/cooking-day")}
           >
-            Go to Configuration
+            Go to Cooking Day
           </Button>
         </main>
       );

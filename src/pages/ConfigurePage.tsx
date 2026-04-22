@@ -4,9 +4,7 @@ import { useMealConfig } from "@/hooks/useMealConfig";
 import { StepIndicator } from "@/components/StepIndicator";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ArrowLeft, ArrowRight, Minus, Plus, Check } from "lucide-react";
@@ -17,7 +15,6 @@ import type {
   Doneness,
   MeatCut,
   SideCategory,
-  OvenTempDisplay,
 } from "@/types/recipe";
 
 // ─── Static Data ────────────────────────────────────────────────────
@@ -45,12 +42,6 @@ const SIDE_CATEGORY_LABELS: Record<SideCategory, string> = {
 
 const SIDE_CATEGORY_ORDER: SideCategory[] = ["staple", "vegetable", "extra"];
 
-const OVEN_TEMP_OPTIONS: { value: OvenTempDisplay; label: string }[] = [
-  { value: "celsius-fan", label: "Celsius (Fan)" },
-  { value: "celsius-conventional", label: "Celsius (Conventional)" },
-  { value: "gas-mark", label: "Gas Mark" },
-];
-
 // ─── Component ──────────────────────────────────────────────────────
 
 export default function ConfigurePage() {
@@ -60,12 +51,9 @@ export default function ConfigurePage() {
     setMeatCutId,
     setDoneness,
     setServings,
-    setActualWeightKg,
-    setServingTime,
     toggleSide,
     updateSide,
     toggleCondiment,
-    setOvenTempDisplay,
   } = useMealConfig();
 
   // Track which meat type the user has expanded (for multi-cut selection)
@@ -94,13 +82,6 @@ export default function ConfigurePage() {
     [allCuts],
   );
 
-  // Suggested weight based on per-person rate × servings
-  const suggestedWeight = selectedCut
-    ? +(selectedCut.weightPerPersonKg * state.servings).toFixed(2)
-    : null;
-
-  const displayWeight = state.actualWeightKg ?? suggestedWeight;
-
   // Condiments for the selected meat
   const meatCondiments = selectedMeatType
     ? getCondimentsForMeat(selectedMeatType)
@@ -119,8 +100,7 @@ export default function ConfigurePage() {
     return map;
   }, [allSides]);
 
-  const canProceed =
-    !!state.meatCutId && state.servings > 0 && !!state.servingTime;
+  const canProceed = !!state.meatCutId && state.servings > 0;
 
   const handleMeatTypeClick = (meatType: MeatType) => {
     const cuts = cutsByMeat.get(meatType) ?? [];
@@ -308,61 +288,6 @@ export default function ConfigurePage() {
               <Plus className="size-5" />
             </Button>
           </div>
-          {suggestedWeight && (
-            <p className="mt-3 text-sm text-muted-foreground">
-              Suggested joint weight:{" "}
-              <span className="font-medium text-foreground">
-                {suggestedWeight}kg
-              </span>
-            </p>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* ── Actual Joint Weight ─────────────────────────────────────── */}
-      {selectedCut && (
-        <Card className="mt-4">
-          <CardHeader>
-            <CardTitle>Actual Joint Weight</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="mb-3 text-sm text-muted-foreground">
-              Enter the weight of the joint you actually bought.
-            </p>
-            <div className="flex items-center gap-2">
-              <Input
-                type="number"
-                step="0.1"
-                min="0.1"
-                max="20"
-                value={displayWeight ?? ""}
-                onChange={(e) => {
-                  const val = e.target.value;
-                  setActualWeightKg(val ? parseFloat(val) : null);
-                }}
-                placeholder={suggestedWeight?.toString() ?? ""}
-                className="h-12 max-w-[150px] text-lg"
-                aria-label="Joint weight in kilograms"
-              />
-              <span className="text-lg text-muted-foreground">kg</span>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* ── Serving Time ────────────────────────────────────────────── */}
-      <Card className="mt-4">
-        <CardHeader>
-          <CardTitle>What Time Are You Serving?</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Input
-            type="time"
-            value={state.servingTime}
-            onChange={(e) => setServingTime(e.target.value)}
-            className="h-12 max-w-[180px] text-lg"
-            aria-label="Serving time"
-          />
         </CardContent>
       </Card>
 
@@ -530,30 +455,6 @@ export default function ConfigurePage() {
           </CardContent>
         </Card>
       )}
-
-      {/* ── Oven Temperature Display ────────────────────────────────── */}
-      <Card className="mt-4">
-        <CardHeader>
-          <CardTitle>Oven Temperature Display</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <RadioGroup
-            value={state.ovenTempDisplay}
-            onValueChange={(val: unknown) =>
-              setOvenTempDisplay(val as OvenTempDisplay)
-            }
-          >
-            {OVEN_TEMP_OPTIONS.map((opt) => (
-              <div key={opt.value} className="flex items-center gap-3 py-1">
-                <RadioGroupItem value={opt.value} id={`temp-${opt.value}`} />
-                <Label htmlFor={`temp-${opt.value}`} className="cursor-pointer">
-                  {opt.label}
-                </Label>
-              </div>
-            ))}
-          </RadioGroup>
-        </CardContent>
-      </Card>
 
       {/* ── Navigation ──────────────────────────────────────────────── */}
       <div className="mt-8 flex items-center justify-between">

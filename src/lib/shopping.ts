@@ -37,7 +37,7 @@ export const CATEGORY_DISPLAY_NAMES: Record<ShoppingCategory, string> = {
   "meat-and-fish": "Meat & Fish",
   "fresh-vegetables": "Fresh Vegetables",
   "dairy-and-eggs": "Dairy & Eggs",
-  storecupboard: "Storecupboard",
+  storecupboard: "Store Cupboard",
   frozen: "Frozen",
   bakery: "Bakery",
   condiments: "Condiments & Sauces",
@@ -162,15 +162,20 @@ export function generateShoppingList(
   }));
 
   // 7. Add the meat itself
-  if (meatCut && config.actualWeightKg && meatCut.ingredients.length > 0) {
+  if (meatCut && meatCut.ingredients.length > 0) {
     const meatRef = meatCut.ingredients[0];
     const meatIngredient = catalogue[meatRef.ingredientId];
     if (meatIngredient) {
+      const hasActualWeight = config.actualWeightKg !== null;
+      const suggestedWeight = +(meatCut.weightPerPersonKg * config.servings).toFixed(2);
+      const displayWeight = config.actualWeightKg ?? suggestedWeight;
+      const quantityPrefix = hasActualWeight ? "" : "~";
+      const note = hasActualWeight ? "" : " (adjust on cooking day)";
       items.unshift({
         ingredientId: meatRef.ingredientId,
-        name: meatIngredient.name,
-        quantity: config.actualWeightKg,
-        unit: "kg",
+        name: meatIngredient.name + note,
+        quantity: displayWeight,
+        unit: quantityPrefix + "kg",
         category: "meat-and-fish",
         fromDishes: [meatCut.name],
         isChecked: checkedSet.has(meatRef.ingredientId),

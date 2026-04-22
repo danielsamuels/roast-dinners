@@ -7,16 +7,12 @@ test.beforeEach(async ({ page }) => {
 
 test.describe("Happy path — full flow", () => {
   test("complete a meal plan from start to cook", async ({ page }) => {
-    // ── Setup page ──
+    // ── Landing page ──
     await page.goto("/");
     await expect(page.getByRole("heading", { name: /plan your roast dinner/i })).toBeVisible();
 
-    // Select 1 oven (already default, but click to be explicit)
-    await page.getByRole("radio", { name: /1 oven/i }).click();
-    await expect(page.getByRole("radio", { name: /1 oven/i })).toHaveAttribute("aria-checked", "true");
-
     // Continue to Configure
-    await page.getByRole("button", { name: /next/i }).click();
+    await page.getByRole("button", { name: /start planning/i }).click();
     await expect(page).toHaveURL(/\/configure/);
 
     // ── Configure page ──
@@ -34,18 +30,6 @@ test.describe("Happy path — full flow", () => {
     // Verify servings shows 4
     await expect(page.locator("span.text-3xl")).toHaveText("4");
 
-    // Set weight — the weight input appears after cut is selected
-    const weightInput = page.getByLabel(/joint weight/i);
-    await expect(weightInput).toBeVisible();
-    await weightInput.click();
-    await weightInput.press("Control+a");
-    await weightInput.pressSequentially("1.8");
-    await weightInput.press("Tab");
-
-    // Set serving time
-    const timeInput = page.getByLabel(/serving time/i);
-    await timeInput.fill("14:00");
-
     // Select a side — Roast Potatoes
     await page.getByRole("button", { name: /roast potatoes/i }).click();
 
@@ -58,7 +42,30 @@ test.describe("Happy path — full flow", () => {
     // Verify ingredients appear (at least one category section should be visible)
     await expect(page.getByText(/item/i).first()).toBeVisible();
 
-    // Navigate to Review (button is in fixed bottom bar)
+    // Navigate to Cooking Day
+    await page.getByRole("button", { name: /review plan/i }).click();
+    await expect(page).toHaveURL(/\/cooking-day/);
+
+    // ── Cooking Day page ──
+    await expect(page.getByRole("heading", { name: /cooking day/i })).toBeVisible();
+
+    // Select 1 oven (already default, but click to be explicit)
+    await page.getByRole("radio", { name: /1 oven/i }).click();
+    await expect(page.getByRole("radio", { name: /1 oven/i })).toHaveAttribute("aria-checked", "true");
+
+    // Set weight
+    const weightInput = page.getByLabel(/joint weight/i);
+    await expect(weightInput).toBeVisible();
+    await weightInput.click();
+    await weightInput.press("Control+a");
+    await weightInput.pressSequentially("1.8");
+    await weightInput.press("Tab");
+
+    // Set serving time
+    const timeInput = page.getByLabel(/serving time/i);
+    await timeInput.fill("14:00");
+
+    // Navigate to Review
     await page.getByRole("button", { name: /review plan/i }).click();
     await expect(page).toHaveURL(/\/review/, { timeout: 10_000 });
 

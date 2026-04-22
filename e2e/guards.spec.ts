@@ -9,18 +9,18 @@ test.describe("Route guards — direct URL visits without config", () => {
   test("visiting /review without config shows fallback", async ({ page }) => {
     await page.goto("/review");
 
-    // Should show "configure your meal first" message
+    // Should show diagnostic message about what's missing
     await expect(
-      page.getByText(/configure your meal first/i),
+      page.getByText(/please select a meat cut/i),
     ).toBeVisible();
   });
 
   test("visiting /cook without config shows fallback", async ({ page }) => {
     await page.goto("/cook");
 
-    // Should show "configure your meal first" or "starting cooking session"
+    // Should show diagnostic message or "starting cooking session"
     await expect(
-      page.getByText(/configure your meal first/i)
+      page.getByText(/please complete the cooking day setup/i)
         .or(page.getByText(/starting cooking session/i).first()),
     ).toBeVisible();
   });

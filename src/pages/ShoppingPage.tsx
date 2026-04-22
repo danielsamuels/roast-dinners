@@ -1,6 +1,7 @@
 import { useState, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronDown, ChevronRight, Copy, Share2, ArrowLeft, ArrowRight, ShoppingCart, Eye, EyeOff } from "lucide-react";
+import { toast } from "sonner";
 import { useMealConfig } from "@/hooks/useMealConfig";
 import { StepIndicator } from "@/components/StepIndicator";
 import { Button } from "@/components/ui/button";
@@ -212,6 +213,7 @@ export default function ShoppingPage() {
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
+      toast.success("Copied to clipboard!");
       setTimeout(() => setCopied(false), 2000);
     } catch {
       // Fallback: no clipboard API
@@ -352,7 +354,7 @@ export default function ShoppingPage() {
             <ArrowLeft className="size-4 mr-1.5" aria-hidden="true" />
             Back
           </Button>
-          <Button size="sm" onClick={() => navigate("/review")}>
+          <Button size="sm" onClick={() => navigate("/cooking-day")}>
             Review Plan
             <ArrowRight className="size-4 ml-1.5" aria-hidden="true" />
           </Button>

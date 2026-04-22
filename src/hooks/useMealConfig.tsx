@@ -38,7 +38,7 @@ const defaultState: MealConfigState = {
   doneness: null,
   servings: 4,
   actualWeightKg: null,
-  servingTime: "13:00",
+  servingTime: "",
   sides: [],
   condiments: [],
   gravy: null,

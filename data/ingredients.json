@@ -102,7 +102,7 @@
   },
   "garlic": {
     "name": "Garlic cloves",
-    "defaultUnit": "whole",
+    "defaultUnit": "cloves",
     "category": "fresh-vegetables"
   },
   "lemon": {
@@ -112,22 +112,22 @@
   },
   "fresh-thyme": {
     "name": "Fresh thyme",
-    "defaultUnit": "whole",
+    "defaultUnit": "sprigs",
     "category": "fresh-vegetables"
   },
   "fresh-rosemary": {
     "name": "Fresh rosemary",
-    "defaultUnit": "whole",
+    "defaultUnit": "sprigs",
     "category": "fresh-vegetables"
   },
   "fresh-sage": {
     "name": "Fresh sage",
-    "defaultUnit": "whole",
+    "defaultUnit": "leaves",
     "category": "fresh-vegetables"
   },
   "fresh-parsley": {
     "name": "Fresh flat-leaf parsley",
-    "defaultUnit": "whole",
+    "defaultUnit": "sprigs",
     "category": "fresh-vegetables"
   },
 
@@ -295,32 +295,32 @@
 
   "cranberry-sauce": {
     "name": "Cranberry sauce",
-    "defaultUnit": "whole",
+    "defaultUnit": "jar",
     "category": "condiments"
   },
   "mint-sauce": {
     "name": "Mint sauce",
-    "defaultUnit": "whole",
+    "defaultUnit": "jar",
     "category": "condiments"
   },
   "apple-sauce": {
     "name": "Apple sauce",
-    "defaultUnit": "whole",
+    "defaultUnit": "jar",
     "category": "condiments"
   },
   "horseradish-sauce": {
     "name": "Horseradish sauce",
-    "defaultUnit": "whole",
+    "defaultUnit": "jar",
     "category": "condiments"
   },
   "english-mustard": {
     "name": "English mustard",
-    "defaultUnit": "whole",
+    "defaultUnit": "jar",
     "category": "condiments"
   },
   "redcurrant-jelly": {
     "name": "Redcurrant jelly",
-    "defaultUnit": "whole",
+    "defaultUnit": "jar",
     "category": "condiments"
   }
 }

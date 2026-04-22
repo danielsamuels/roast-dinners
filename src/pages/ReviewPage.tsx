@@ -90,20 +90,36 @@ export default function ReviewPage() {
   };
 
   if (!config || !schedule || !meatCut) {
+    const issues: { message: string; link: string; linkText: string }[] = [];
+    if (!state.meatCutId) {
+      issues.push({ message: "Please select a meat cut", link: "/configure", linkText: "Go to Configure" });
+    }
+    if (!state.actualWeightKg) {
+      issues.push({ message: "Please enter the joint weight on the Cooking Day page", link: "/cooking-day", linkText: "Go to Cooking Day" });
+    }
+    if (!state.servingTime) {
+      issues.push({ message: "Please set a serving time on the Cooking Day page", link: "/cooking-day", linkText: "Go to Cooking Day" });
+    }
+    if (issues.length === 0) {
+      issues.push({ message: "Please complete the Cooking Day setup", link: "/cooking-day", linkText: "Go to Cooking Day" });
+    }
+
     return (
       <main id="main-content" className="container mx-auto max-w-2xl px-4 py-8">
         <StepIndicator currentPath="/review" />
-        <div className="mt-8 text-center">
-          <p className="text-muted-foreground">
-            Please configure your meal first.
-          </p>
-          <Button
-            variant="outline"
-            className="mt-4"
-            onClick={() => navigate("/configure")}
-          >
-            Go to Configuration
-          </Button>
+        <div className="mt-8 text-center space-y-3">
+          {issues.map((issue, i) => (
+            <div key={i}>
+              <p className="text-muted-foreground">{issue.message}</p>
+              <Button
+                variant="outline"
+                className="mt-2"
+                onClick={() => navigate(issue.link)}
+              >
+                {issue.linkText}
+              </Button>
+            </div>
+          ))}
         </div>
       </main>
     );
@@ -306,9 +322,9 @@ export default function ReviewPage() {
 
       {/* ── Navigation ── */}
       <div className="mt-8 flex flex-wrap items-center gap-3">
-        <Button variant="outline" onClick={() => navigate("/shopping")}>
+        <Button variant="outline" onClick={() => navigate("/cooking-day")}>
           <ArrowLeft className="size-4" data-icon="inline-start" />
-          Shopping List
+          Cooking Day
         </Button>
         <Button variant="ghost" onClick={() => navigate("/configure")}>
           <Pencil className="size-4" data-icon="inline-start" />

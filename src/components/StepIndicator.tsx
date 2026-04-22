@@ -2,9 +2,9 @@ import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const STEPS = [
-  { path: "/", label: "Setup" },
-  { path: "/configure", label: "Configure" },
+  { path: "/configure", label: "Plan" },
   { path: "/shopping", label: "Shopping" },
+  { path: "/cooking-day", label: "Cooking Day" },
   { path: "/review", label: "Review" },
   { path: "/cook", label: "Cook" },
 ] as const;
