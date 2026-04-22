@@ -1,5 +1,5 @@
 import path from "path"
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import tailwindcss from "@tailwindcss/vite"
 import { VitePWA } from "vite-plugin-pwa"
@@ -7,6 +7,9 @@ import { APP_CONFIG } from "./src/config/app"
 
 // https://vite.dev/config/
 export default defineConfig({
+  test: {
+    exclude: ["e2e/**", "node_modules/**"],
+  },
   plugins: [
     react(),
     tailwindcss(),
