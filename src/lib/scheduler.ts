@@ -476,6 +476,15 @@ export function generateSchedule(
     isPrepAhead: false,
   }));
 
+  // Round start times to the nearest 5 minutes for cleaner schedules
+  for (const step of scheduledSteps) {
+    const ms = step.startTime.getTime();
+    const fiveMin = 5 * 60 * 1000;
+    const rounded = new Date(Math.round(ms / fiveMin) * fiveMin);
+    step.startTime = rounded;
+    step.endTime = addMinutes(rounded, step.durationMinutes);
+  }
+
   // Sort by start time
   scheduledSteps.sort(
     (a, b) => a.startTime.getTime() - b.startTime.getTime(),
